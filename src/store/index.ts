@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import loanReducer from './slices/loanSlice';
+import loanProductReducer from "./slices/loanProductSlice";
 import chatReducer from './slices/chatSlice';
 import logger from "redux-logger";
 
 export const store = configureStore({
   reducer: {
-    loan: loanReducer,
+    loanProducts: loanProductReducer,
     chat: chatReducer,
   },
   middleware: (getDefaultMiddleware) =>
