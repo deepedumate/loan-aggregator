@@ -5,7 +5,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to loan aggregator page
+    // Redirect to ai-loan-path page
     navigate("/ai-loan-path");
   }, [navigate]);
 
