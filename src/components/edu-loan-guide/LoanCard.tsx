@@ -452,23 +452,42 @@ export function LoanCard({
           <Button
             onClick={() => onInterested(loan.id.toString())}
             className={`
-      flex-1 font-bold shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.03] active:scale-95 group
+      flex-1 font-bold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] active:scale-95 group relative overflow-hidden
       ${
         isInterested
-          ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white border-2 border-red-400 shadow-red-500/30 hover:shadow-red-500/50"
-          : "bg-gradient-to-r from-primary to-primary-light hover:from-primary-light hover:to-primary text-primary-foreground border-2 border-transparent"
+          ? "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white border-2 border-blue-400 shadow-blue-500/50 hover:shadow-blue-600/70"
+          : "bg-white/80 dark:bg-white/5 backdrop-blur-xl border-2 border-gray-200/80 dark:border-white/15 text-gray-900 dark:text-foreground shadow-sm hover:bg-white/90 dark:hover:bg-white/8 hover:border-gray-300 dark:hover:border-white/20 hover:shadow-md"
       }
     `}
+            style={
+              !isInterested
+                ? {
+                    backdropFilter: "blur(16px)",
+                    WebkitBackdropFilter: "blur(16px)",
+                  }
+                : {}
+            }
             size="lg"
           >
-            <span className="transition-all duration-300 group-hover:scale-105 flex items-center justify-center gap-2">
+            {/* Shimmer effect for interested state */}
+            {isInterested && (
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 animate-shimmer" />
+            )}
+
+            <span className="transition-all duration-300 group-hover:scale-105 flex items-center justify-center gap-2 relative z-10">
               {isInterested ? (
                 <>
-                  <X className="w-5 h-5 animate-pulse" />
-                  <span className="text-base tracking-wide">Un Interest</span>
+                  <div className="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center backdrop-blur-sm">
+                    <CheckCircle2 className="w-3.5 h-3.5 animate-pulse" />
+                  </div>
+                  <span className="text-base tracking-wide drop-shadow-md font-extrabold">
+                    Interested
+                  </span>
                 </>
               ) : (
-                <span className="text-base">Interested?</span>
+                <>
+                  <span className="text-sm font-medium">Show Interest</span>
+                </>
               )}
             </span>
           </Button>

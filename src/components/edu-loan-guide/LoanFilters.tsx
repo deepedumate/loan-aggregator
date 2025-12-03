@@ -204,12 +204,16 @@ export function LoanFilters({
             <Button
               variant="outline"
               size="lg"
-              className="h-12 px-6 rounded-xl border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 relative"
+              className=" h-12 px-6 rounded-xl border-border/50
+    hover:border-primary/40
+    hover:bg-primary/5
+    hover:text-foreground
+    transition-all duration-300 relative"
             >
               <Filter className="w-5 h-5 mr-2" />
               Filters
               {appliedFiltersCount > 0 && (
-                <Badge className="ml-2 bg-primary text-primary-foreground">
+                <Badge className="ml-2 bg-primary text-primary">
                   {appliedFiltersCount}
                 </Badge>
               )}

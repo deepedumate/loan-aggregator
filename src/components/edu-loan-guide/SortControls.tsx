@@ -103,7 +103,8 @@ export function SortControls({ sortOptions, onSortChange }: SortControlsProps) {
         onClick={toggleDirection}
         variant="outline"
         size="sm"
-        className="h-10 px-3 rounded-lg border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
+        className="h-10 px-3 rounded-lg border-border/50 hover:text-foreground
+ hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
       >
         {sortOptions.direction === "asc" ? (
           <ArrowUp className="w-4 h-4 mr-2" />
