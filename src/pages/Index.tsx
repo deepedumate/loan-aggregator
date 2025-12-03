@@ -6,7 +6,7 @@ const Index = () => {
 
   useEffect(() => {
     // Redirect to loan aggregator page
-    navigate("/loans");
+    navigate("/loan-offers");
   }, [navigate]);
 
   return null;

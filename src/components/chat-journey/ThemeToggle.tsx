@@ -1,5 +1,5 @@
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from "@/components/ai-loan-path/ThemeProvider"
+import { useTheme } from "@/components/chat-journey/ThemeProvider"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 

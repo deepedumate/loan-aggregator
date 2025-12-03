@@ -24,6 +24,12 @@ declare global {
   }
 }
 
+interface UniversitySuggestion {
+  name: string;          // "Harvard University, Cambridge, MA, USA"
+  placeId: string;       // "ChIJOae13ii644kRuC8SkiUkpQQ"
+  country: string;       // "US" or "USA"
+}
+
 // Module state (private variables in closure)
 let isLoaded = false;
 let isLoading = false;
@@ -81,7 +87,7 @@ const loadGoogleMapsSDK = async (apiKey: string): Promise<void> => {
  * @param query - Search query
  * @returns Promise resolving to array of university names
  */
-const fetchUniversitySuggestions = async (query: string): Promise<string[]> => {
+const fetchUniversitySuggestions = async (query: string): Promise<UniversitySuggestion[]> => {
   // Check if API is loaded
   if (!isLoaded || !autocompleteService) {
     console.warn('Google Maps API not loaded yet');
@@ -115,17 +121,24 @@ const fetchUniversitySuggestions = async (query: string): Promise<string[]> => {
           ];
 
           // Filter and map results
-          const universityNames = predictions
+          const results  = predictions
             .filter((prediction) => {
               const lowerDesc = prediction.description.toLowerCase();
               return universityKeywords.some((keyword) =>
                 lowerDesc.includes(keyword)
               );
             })
-            .map((prediction) => prediction.description)
+            .map((prediction) => {
+              const country = extractCountryFromTerms(prediction.terms);
+              return {
+                name: prediction.description,
+                placeId: prediction.place_id,
+                country: country
+              };
+            })
             .slice(0, 8); // Limit to 8 suggestions
 
-          resolve(universityNames);
+          resolve(results);
         } else {
           console.log('Google Places API status:', status);
           resolve([]);
@@ -159,7 +172,7 @@ export const googleMapsService = {
    * @param query - Search query (minimum 2 characters)
    * @returns Promise resolving to array of university names (max 8)
    */
-  getUniversitySuggestions: async (query: string): Promise<string[]> => {
+  getUniversitySuggestions: async (query: string): Promise<UniversitySuggestion[]> => {
     return fetchUniversitySuggestions(query);
   },
 
@@ -170,4 +183,31 @@ export const googleMapsService = {
   isLoaded: (): boolean => {
     return checkIsLoaded();
   },
+};
+
+// Helper function to extract country
+const extractCountryFromTerms = (terms: any[]): string => {
+  if (!terms || terms.length === 0) return 'Other';
+  
+  // Last term is usually the country
+  const lastTerm = terms[terms.length - 1].value;
+  
+  // Map common country names to codes
+  const countryMap: Record<string, string> = {
+    'USA': 'US',
+    'United States': 'US',
+    'UK': 'UK', 
+    'United Kingdom': 'UK',
+    'Canada': 'Canada',
+    'Australia': 'Australia',
+    'Germany': 'Germany',
+    'France': 'France',
+    'Singapore': 'Singapore',
+    'India': 'India',
+    'China': 'China',
+    'Japan': 'Japan',
+    // Add more as needed
+  };
+  
+  return countryMap[lastTerm] || lastTerm;
 };

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import AILoanHeader from '@/components/ai-loan-path/AILoanHeader';
+import AILoanHeader from '@/components/chat-journey/AILoanHeader';
 
-export const AILoanPathLayout = () => {
+export const ChatJourneyLayout = () => {
   return (
     <div className="min-h-screen">
       <AILoanHeader />

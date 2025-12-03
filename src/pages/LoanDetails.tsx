@@ -619,7 +619,7 @@
 //             <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto" />
 //             <h2 className="text-2xl font-bold">Loan Not Found</h2>
 //             <p className="text-muted-foreground">The loan you're looking for doesn't exist.</p>
-//             <Button onClick={() => navigate("/loans")}>
+//             <Button onClick={() => navigate("/loan-offers")}>
 //               <ArrowLeft className="w-4 h-4 mr-2" />
 //               Back to Loans
 //             </Button>
@@ -1135,6 +1135,7 @@ const FAVORITES_STORAGE_KEY = "loan-favorites";
 
 export default function LoanDetails() {
   const { id } = useParams<{ id: string }>();
+  console.log("LoanDetails rendering with id:", id);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -1200,7 +1201,7 @@ export default function LoanDetails() {
             <p className="text-muted-foreground">
               {error || "The loan you're looking for doesn't exist."}
             </p>
-            <Button onClick={() => navigate("/loans")}>
+            <Button onClick={() => navigate("/loan-offers")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Loans
             </Button>
@@ -1452,7 +1453,7 @@ export default function LoanDetails() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Button
             variant="ghost"
-            onClick={() => navigate("/loans")}
+            onClick={() => navigate("/loan-offers")}
             className="mb-4 hover:bg-primary/5"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1949,7 +1950,6 @@ export default function LoanDetails() {
         loan={loan}
       />
 
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { Moon, Sun, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "./NavLink";
-import { useTheme } from "../ai-loan-path/ThemeProvider";
+import { useTheme } from "../chat-journey/ThemeProvider";
 
 export const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -16,7 +16,7 @@ export const Header = () => {
 
         <nav className="flex items-center gap-6">
           <NavLink
-            to="/loans"
+            to="/loan-offers"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             activeClassName="text-foreground font-semibold"
           >

@@ -13,10 +13,6 @@ const loanProductClient = createApiClient({
 });
 
 export const loanProductApi = loanProductClient.instance;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 interface GetLoanProductsParams {
   page: number;
   size: number;

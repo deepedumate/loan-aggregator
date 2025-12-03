@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { GraduationCap, Home, Banknote, Clock } from "lucide-react";
-import { CurrencyDisplay } from "@/components/ai-loan-path/CurrencyDisplay";
+import { CurrencyDisplay } from "@/components/chat-journey/CurrencyDisplay";
 
 interface CostBreakdownCardProps {
   totalCost: string;
