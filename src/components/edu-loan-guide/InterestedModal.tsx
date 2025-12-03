@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   signup as signupUser,
   updateUser,
-} from "@/store/slices/contactAuthSlice"; // ✅ Added updateUser
+} from "@/store/slices/contactAuthSlice";
 import { LoanProduct } from "@/types/loanProduct";
 
 const EMAIL_DOMAIN_CORRECTIONS: Record<string, string> = {
@@ -138,7 +138,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
       return;
     }
 
-    // ===== ADDED: Validate loan exists =====
     if (!loan) {
       toast.error("Invalid loan", {
         description: "Please try again or select a different loan.",
@@ -149,7 +148,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
     setIsSubmitting(true);
 
     try {
-      // ✅ STEP 1: Prepare signup payload
       const signupPayload = {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
@@ -173,7 +171,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
       console.log("Step 1: Submitting signup with payload:", signupPayload);
 
-      // ✅ STEP 2: Call signup to create/update user
       const signupResult = await dispatch(signupUser(signupPayload) as any);
 
       if (!signupResult.payload) {
@@ -184,8 +181,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
       console.log("Step 2: Signup successful:", signupResult.payload);
 
-      // ✅ STEP 3: Get student ID from the updated contactUser state
-      // The signup thunk updates the contactAuth state, so we can access it
       const studentId =
         signupResult.payload?.student?.id || contactUser?.data?.student?.id;
 
@@ -195,11 +190,9 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
       console.log("Step 3: Got student ID:", studentId);
 
-      // ✅ STEP 4: Get existing interested array and add new loan product
       const existingInterested =
         signupResult.payload?.student?.interested || [];
 
-      // Only add if not already in the array
       const newInterested = existingInterested.includes(loan.id)
         ? existingInterested
         : [...existingInterested, loan.id];
@@ -210,7 +203,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
         loanId: loan.id,
       });
 
-      // ✅ STEP 5: Call update API with interested array
       const updatePayload = {
         studentId: studentId,
         interested: newInterested,
@@ -231,7 +223,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
       console.log("Step 5: Interest updated successfully!");
 
-      // ✅ STEP 6: Show success toast
       toast.success("Interest Submitted! 🎉", {
         description: `Thank you ${firstName}! ${
           loan?.lender_name || "The lender"
@@ -239,7 +230,6 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
         duration: 5000,
       });
 
-      // Reset form
       setFirstName("");
       setLastName("");
       setEmail("");
@@ -277,14 +267,14 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-950 border-gray-200 dark:border-gray-800">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold font-heading">
+          <DialogTitle className="text-2xl font-bold font-heading text-gray-900 dark:text-white">
             Express Your Interest
           </DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogDescription className="text-base text-gray-600 dark:text-gray-400">
             Interested in{" "}
-            <span className="font-semibold text-foreground">
+            <span className="font-semibold text-gray-900 dark:text-white">
               {loan?.lender_name}
             </span>
             ? Fill in your details and we'll connect you with the lender.
@@ -294,18 +284,23 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
         <form onSubmit={handleSubmit} className="space-y-5 py-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName" className="text-sm font-semibold">
+              <Label
+                htmlFor="firstName"
+                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 First Name <span className="text-destructive">*</span>
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
                 <Input
                   id="firstName"
                   placeholder="John"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className={`pl-10 ${
-                    errors.firstName ? "border-destructive" : ""
+                  className={`pl-10 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-accent dark:focus:border-accent focus:ring-accent/20 ${
+                    errors.firstName
+                      ? "border-destructive focus:border-destructive focus:ring-destructive/20"
+                      : ""
                   }`}
                   maxLength={50}
                 />
@@ -316,18 +311,23 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lastName" className="text-sm font-semibold">
+              <Label
+                htmlFor="lastName"
+                className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Last Name <span className="text-destructive">*</span>
               </Label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
                 <Input
                   id="lastName"
                   placeholder="Doe"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className={`pl-10 ${
-                    errors.lastName ? "border-destructive" : ""
+                  className={`pl-10 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-accent dark:focus:border-accent focus:ring-accent/20 ${
+                    errors.lastName
+                      ? "border-destructive focus:border-destructive focus:ring-destructive/20"
+                      : ""
                   }`}
                   maxLength={50}
                 />
@@ -339,26 +339,33 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-semibold">
+            <Label
+              htmlFor="email"
+              className="text-sm font-semibold text-gray-700 dark:text-gray-300"
+            >
               Email Address <span className="text-destructive">*</span>
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
               <Input
                 id="email"
                 type="email"
                 placeholder="john.doe@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
+                className={`pl-10 bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-accent dark:focus:border-accent focus:ring-accent/20 ${
+                  errors.email
+                    ? "border-destructive focus:border-destructive focus:ring-destructive/20"
+                    : ""
+                }`}
                 maxLength={255}
               />
             </div>
             {emailSuggestion && (
-              <Alert className="border-accent/50 bg-accent/5">
+              <Alert className="border-accent/30 dark:border-accent/50 bg-accent/5 dark:bg-accent/10">
                 <AlertCircle className="h-4 w-4 text-accent" />
                 <AlertDescription className="flex items-center justify-between">
-                  <span className="text-sm">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
                     Did you mean{" "}
                     <span className="font-semibold text-accent">
                       {emailSuggestion}
@@ -370,7 +377,7 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
                     size="sm"
                     variant="ghost"
                     onClick={acceptSuggestion}
-                    className="h-7 text-accent hover:text-accent hover:bg-accent/10 ml-2"
+                    className="h-7 text-accent hover:text-accent hover:bg-accent/10 dark:hover:bg-accent/20 ml-2"
                   >
                     Use this
                   </Button>
@@ -382,22 +389,26 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
             )}
           </div>
 
-          <div className="space-y-3 rounded-lg bg-muted/50 p-4 border border-border/50">
+          <div className="space-y-3 rounded-lg bg-gray-50 dark:bg-gray-900/50 p-4 border border-gray-200 dark:border-gray-800">
             <div className="flex items-start gap-3">
               <Checkbox
                 id="consent"
                 checked={consent}
                 onCheckedChange={(checked) => setConsent(checked as boolean)}
-                className={errors.consent ? "border-destructive" : ""}
+                className={`border-gray-300 dark:border-gray-700 data-[state=checked]:bg-accent data-[state=checked]:border-accent ${
+                  errors.consent ? "border-destructive" : ""
+                }`}
               />
               <div className="flex-1">
                 <Label
                   htmlFor="consent"
-                  className="text-sm leading-relaxed cursor-pointer"
+                  className="text-sm leading-relaxed cursor-pointer text-gray-700 dark:text-gray-300"
                 >
                   I allow the Edumate team and{" "}
-                  <span className="font-semibold">{loan?.lender_name}</span> to
-                  contact me for additional steps regarding this loan
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {loan?.lender_name}
+                  </span>{" "}
+                  to contact me for additional steps regarding this loan
                   application.
                   <span className="text-destructive ml-1">*</span>
                 </Label>
@@ -415,17 +426,18 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
             variant="outline"
             onClick={handleClose}
             disabled={isSubmitting}
+            className="border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-gray-600"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-accent to-accent-light hover:from-accent-light hover:to-accent"
+            className="bg-gradient-to-r from-accent to-accent-light hover:from-accent-light hover:to-accent text-white shadow-md hover:shadow-lg transition-all duration-300"
           >
             {isSubmitting ? (
               <>
-                <div className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full animate-spin mr-2" />
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
                 Submitting...
               </>
             ) : (
