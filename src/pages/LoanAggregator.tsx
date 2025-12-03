@@ -80,6 +80,7 @@ export default function LoanList() {
   const favoriteLoanIds = useAppSelector(selectFavoriteLoanIds);
   const showFavoritesOnly = useAppSelector(selectShowFavoritesOnly);
   const appliedFiltersCount = useAppSelector(selectAppliedFiltersCount);
+  const contactUser = useAppSelector((state: any) => state.contactAuth?.data?.student || null);
 
   // Local UI state only (no persistence)
   const [showComparison, setShowComparison] = useState(false);

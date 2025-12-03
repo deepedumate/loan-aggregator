@@ -76,7 +76,7 @@ export const signup = createAsyncThunk(
       if ("error" in response) {
         return rejectWithValue(response.error.message);
       }
-      return response.data;
+      return response?.data?.data;
     } catch (err: any) {
       return rejectWithValue(
         err.message || "Failed to sign up"

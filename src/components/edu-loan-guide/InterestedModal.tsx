@@ -469,7 +469,7 @@ console.log("Contact User State:", contactUser);
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email: email.trim().toLowerCase(),
-        phoneNumber: contactUser?.data?.data?.student?.phone || "",
+        phoneNumber: contactUser?.data?.student?.phone || "",
         formType: "loan_interest_form",
         submissionDate: new Date().toISOString(),
         userAgent: navigator.userAgent,
