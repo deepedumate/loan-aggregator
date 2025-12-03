@@ -27,7 +27,7 @@ export const Footer = () => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/loans" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <NavLink to="/loan-offers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Loan Aggregator
                 </NavLink>
               </li>

@@ -9,12 +9,19 @@ export interface ChatMessage {
   id?: string;
 }
 
+interface UniversitySuggestion {
+  name: string;          // "Harvard University, Cambridge, MA, USA"
+  placeId: string;       // "ChIJOae13ii644kRuC8SkiUkpQQ"
+  country: string;       // "US" or "USA"
+}
+
 export interface FormData {
   studyLevel: string;
   admitStatus: string;
   intendedMonth: number;
   intendedYear: number;
   universityName: string;
+  studyDestination: string;
   programId: string;
   totalCost: number;
   loanAmount: number;
@@ -34,7 +41,7 @@ interface ChatState {
   userInput: string;
   phoneValidation: { isValid: boolean; error?: string } | null;
   otpCountdown: number;
-  universitySuggestions: string[];
+  universitySuggestions: UniversitySuggestion[];
   isLoadingSuggestions: boolean;
   showSuggestions: boolean;
   preferredCurrency: string;
@@ -69,6 +76,7 @@ const initialState: ChatState = {
     intendedMonth: 0,
     intendedYear: 0,
     universityName: '',
+    studyDestination: '',
     programId: '',
     totalCost: 0,
     loanAmount: 0,
@@ -125,7 +133,7 @@ const chatSlice = createSlice({
     setOtpCountdown: (state, action: PayloadAction<number>) => {
       state.otpCountdown = action.payload;
     },
-    setUniversitySuggestions: (state, action: PayloadAction<string[]>) => {
+    setUniversitySuggestions: (state, action: PayloadAction<UniversitySuggestion[]>) => {
       state.universitySuggestions = action.payload;
     },
     setIsLoadingSuggestions: (state, action: PayloadAction<boolean>) => {

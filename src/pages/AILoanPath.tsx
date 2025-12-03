@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "@/store";
 import {
   addMessage,
@@ -24,13 +25,14 @@ import {
   resetChat,
   type Step
 } from "@/store/slices/chatSlice";
-import { ChatBubble } from "@/components/ai-loan-path/ChatBubble";
-import { OptionButton } from "@/components/ai-loan-path/OptionButton";
-// import { LoanCard } from "@/components/ai-loan-path/LoanCard";
-import { CostBreakdownCard } from "@/components/ai-loan-path/CostBreakdownCard";
-import { IntendedDateCard } from "@/components/ai-loan-path/IntendedDateCard";
-import { CurrencyDisplay } from "@/components/ai-loan-path/CurrencyDisplay";
-import { ThemeToggle } from "@/components/ai-loan-path/ThemeToggle";
+import { signup as signupUser } from "@/store/slices/contactAuthSlice";
+import { ChatBubble } from "@/components/chat-journey/ChatBubble";
+import { OptionButton } from "@/components/chat-journey/OptionButton";
+// import { LoanCard } from "@/components/chat-journey/LoanCard";
+import { CostBreakdownCard } from "@/components/chat-journey/CostBreakdownCard";
+import { IntendedDateCard } from "@/components/chat-journey/IntendedDateCard";
+import { CurrencyDisplay } from "@/components/chat-journey/CurrencyDisplay";
+import { ThemeToggle } from "@/components/chat-journey/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -63,15 +65,22 @@ import { useToast } from "@/hooks/use-toast";
 import { apiService } from "@/lib/apiService";
 import { googleMapsService } from "@/lib/Googlemapsservice";
 
+interface UniversitySuggestion {
+  name: string;          // "Harvard University, Cambridge, MA, USA"
+  placeId: string;       // "ChIJOae13ii644kRuC8SkiUkpQQ"
+  country: string;       // "US" or "USA"
+}
+
 // Google Maps API configuration
 const GOOGLE_MAPS_API_KEY =
   import.meta.env.VITE_GOOGLE_MAPS_API_KEY ||
   import.meta.env.REACT_APP_GOOGLE_MAPS_API_KEY ||
   "";
 
-const Index = () => {
+const ChatJourney = () => {
   const { toast } = useToast();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Redux state selectors
   const messages = useSelector((state: RootState) => state.chat.messages);
@@ -336,10 +345,10 @@ const Index = () => {
   // Helper function to map study level
   const mapStudyLevel = (studyLevel: string): string => {
     const mapping: Record<string, string> = {
-      undergraduate: "Bachelor",
-      graduate_mba: "MBA",
-      graduate_masters: "Master",
-      phd: "PhD",
+      'undergraduate': 'Bachelors',
+      'graduate_mba': 'Masters',
+      'graduate_masters': 'Masters',
+      'phd': 'PhD'
     };
     return mapping[studyLevel] || "Bachelor";
   };
@@ -367,10 +376,9 @@ const Index = () => {
   const prepareContactPayload = (formData: any) => {
     const phoneNumber = formData.phone.replace(/\+/g, "");
     const submissionDate = new Date().toISOString();
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    const referrer = typeof document !== "undefined" ? document.referrer : "";
-    const studyDestination = extractStudyDestination(formData.universityName);
+    const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+    const referrer = typeof document !== 'undefined' ? document.referrer : '';
+    const studyDestination = formData.studyDestination;
     const levelOfEducation = mapStudyLevel(formData.studyLevel);
     const intakeMonth = getMonthName(formData.intendedMonth);
     const intakeYear = formData.intendedYear.toString();
@@ -617,14 +625,14 @@ const Index = () => {
     }, 300);
   };
 
-  const handleSuggestionSelect = (universityName: string) => {
-    dispatch(setUserInput(universityName));
+  const handleSuggestionSelect = (universitydetails: UniversitySuggestion) => {
+    dispatch(setUserInput(universitydetails.name));
     dispatch(setShowSuggestions(false));
     dispatch(setUniversitySuggestions([]));
-    handleUniversitySearch(universityName);
+    handleUniversitySearch(universitydetails?.name, universitydetails?.country);
   };
 
-  const handleUniversitySearch = async (selectedUniversity?: string) => {
+  const handleUniversitySearch = async (selectedUniversity?: string, selectedCountry: string = "") => {
     const universityName = selectedUniversity || userInput.trim();
     if (!universityName) return;
 
@@ -632,7 +640,7 @@ const Index = () => {
     dispatch(setUserInput(""));
     dispatch(setShowSuggestions(false));
     dispatch(setUniversitySuggestions([]));
-    dispatch(updateFormData({ universityName }));
+    dispatch(updateFormData({ universityName, studyDestination: selectedCountry }));
 
     await addTypingMessage(
       `Searching for **${universityName}**. Retrieving available programs...`
@@ -1076,15 +1084,13 @@ const Index = () => {
           const contactPayload = prepareContactPayload(formData);
           console.log("Saving contact data:", contactPayload);
 
-          // Call contact upsert API
-          const contactResponse = await apiService.upsertContact(
-            contactPayload
-          );
+          // Call signup thunk to save contact data
+          const result = await dispatch(signupUser(contactPayload) as any);
 
-          if (contactResponse.data?.success) {
-            console.log("Contact saved successfully:", contactResponse.data);
-          } else {
-            console.error("Failed to save contact:", contactResponse.error);
+          if (result.payload) {
+            console.log("Contact saved successfully:", result.payload);
+          } else if (result.error) {
+            console.error("Failed to save contact:", result.error);
           }
         } catch (contactError) {
           console.error("Error saving contact:", contactError);
@@ -1115,9 +1121,16 @@ const Index = () => {
   };
 
   const handleCheckEligibleLoans = async () => {
-    const url = "/loans";
-    if (typeof window !== "undefined") {
-      window.location.assign(url);
+    const url = "/loan-offers";
+    // Use client-side navigation to preserve Redux state
+    try {
+      navigate(url);
+    } catch (e) {
+      // Fallback to full navigation if navigate fails
+      // if (typeof window !== "undefined") {
+      //   window.location.assign(url);
+      // }
+      console.error("Navigation error:", e);
     }
   };
 
@@ -1182,7 +1195,7 @@ const Index = () => {
         {step !== "loans" ? (
           <>
             <ScrollArea className="flex-1 h-full">
-              <div className="pb-32">
+              <div className="pb-8">
                 {messages.map((msg, idx) => {
                   const canEdit =
                     msg.isUser &&
@@ -1478,7 +1491,7 @@ const Index = () => {
                               >
                                 <div className="flex items-center gap-2">
                                   <Building2 className="w-4 h-4 text-primary" />
-                                  <span className="text-sm">{suggestion}</span>
+                                  <span className="text-sm">{suggestion?.name}</span>
                                 </div>
                               </div>
                             ))}
@@ -1869,4 +1882,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default ChatJourney;

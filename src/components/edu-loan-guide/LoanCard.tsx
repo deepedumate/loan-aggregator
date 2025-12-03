@@ -154,7 +154,7 @@ export interface LoanData {
 //           <Button
 //             variant="link"
 //             className="text-primary hover:text-primary-light p-0 h-auto mt-3 group"
-//             onClick={() => navigate(`/loans/${loan.id}`)}
+//             onClick={() => navigate(`/loan-offers/${loan.id}`)}
 //           >
 //             View Full Details <ArrowRight className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />
 //           </Button>
@@ -437,7 +437,7 @@ export function LoanCard({
           <Button
             variant="link"
             className="text-primary hover:text-primary-light p-0 h-auto mt-3 group"
-            onClick={() => navigate(`/loans/${loan.id}`)}
+            onClick={() => navigate(`/loan-offers/${loan.id}`)}
           >
             View Full Details{" "}
             <ArrowRight className="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" />

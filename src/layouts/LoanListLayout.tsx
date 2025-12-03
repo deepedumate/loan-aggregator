@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '@/components/edu-loan-guide/Header';
 import { Footer } from '@/components/edu-loan-guide/Footer';
 
-export const EduLoanGuideLayout = () => {
+export const LoanListLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />

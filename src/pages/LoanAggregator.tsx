@@ -63,7 +63,7 @@ import {
 } from "@/store/slices/loanProductSlice";
 import { LoanProduct, LoanProductFilters } from "@/types/loanProduct";
 
-export default function LoanAggregator() {
+export default function LoanList() {
   const dispatch = useAppDispatch();
 
   // Redux state

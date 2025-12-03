@@ -8,16 +8,17 @@ import { Provider } from 'react-redux';
 import { store } from '@/store';
 
 // Layouts
-import { EduLoanGuideLayout } from '@/layouts/EduLoanGuideLayout';
-import { AILoanPathLayout } from '@/layouts/AILoanPathLayout';
+import { LoanListLayout } from '@/layouts/LoanListLayout';
+import { ChatJourneyLayout } from '@/layouts/ChatJourneyLayout';
 
 // Pages
 import Home from "./pages/Home";
-import LoanAggregator from "./pages/LoanAggregator";
+import LoanList from "./pages/LoanAggregator";
 import LoanDetails from "./pages/LoanDetails";
-import AILoanPath from "./pages/AILoanPath";
+import ChatJourney from "./pages/AILoanPath";
 import NotFound from "./pages/NotFound";
-import { ThemeProvider } from "./components/ai-loan-path/ThemeProvider";
+import { ThemeProvider } from "./components/chat-journey/ThemeProvider";
+import { HomeLayout } from "./layouts/HomeLayout";
 
 const queryClient = new QueryClient();
 
@@ -30,16 +31,18 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
+              <Route element={<HomeLayout />}>
+                <Route path="/" element={<Home />} />
+              </Route>
               {/* Edu Loan Guide Routes with Header/Footer Layout */}
-              <Route element={<EduLoanGuideLayout />}>
-                <Route path="/loans" element={<LoanAggregator />} />
-                <Route path="/loans/:id" element={<LoanDetails />} />
+              <Route element={<LoanListLayout />}>
+                <Route path="/loan-offers" element={<LoanList />} />
+                <Route path="/loan-offers/:id" element={<LoanDetails />} />
               </Route>
 
               {/* AI Loan Path Routes with Minimal Layout */}
-              <Route element={<AILoanPathLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/ai-loan-path" element={<AILoanPath />} />
+              <Route element={<ChatJourneyLayout />}>
+                <Route path="/loan-application" element={<ChatJourney />} />
               </Route>
 
               {/* 404 Not Found */}

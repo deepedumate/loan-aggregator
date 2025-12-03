@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import loanProductReducer from "./slices/loanProductSlice";
 import chatReducer from './slices/chatSlice';
+import contactAuthReducer from './slices/contactAuthSlice';
 import logger from "redux-logger";
 
 export const store = configureStore({
   reducer: {
     loanProducts: loanProductReducer,
     chat: chatReducer,
+    contactAuth: contactAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(logger),

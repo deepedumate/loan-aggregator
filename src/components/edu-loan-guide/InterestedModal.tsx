@@ -342,7 +342,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { LoanData } from "./LoanCard";
 import { toast } from "sonner";
 import { Mail, User, CheckCircle2, AlertCircle } from "lucide-react";
-import { apiService } from "@/lib/apiService";
+import { useDispatch, useSelector } from "react-redux";
+import { signup as signupUser } from "@/store/slices/contactAuthSlice";
 import { LoanProduct } from "@/types/loanProduct";
 
 const EMAIL_DOMAIN_CORRECTIONS: Record<string, string> = {
@@ -399,7 +400,9 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
     consent?: string;
   }>({});
   const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
-
+  const dispatch = useDispatch();
+  const contactUser = useSelector((state: any) => state.contactAuth);
+console.log("Contact User State:", contactUser);
   // Check for email typos
   useEffect(() => {
     if (email && email.includes("@")) {
@@ -466,6 +469,7 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
         email: email.trim().toLowerCase(),
+        phoneNumber: contactUser?.data?.data?.student?.phone || "",
         formType: "loan_interest_form",
         submissionDate: new Date().toISOString(),
         userAgent: navigator.userAgent,
@@ -488,10 +492,10 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
 
       console.log("Submitting loan interest with payload:", payload);
 
-      // ✅ Call the real API service
-      const response = await apiService.upsertContact(payload);
+      // ✅ Dispatch signup thunk from contactAuthSlice
+      const result = await dispatch(signupUser(payload) as any);
 
-      if (response.data?.success) {
+      if (result.payload) {
         toast.success("Interest Submitted! 🎉", {
           description: `Thank you ${firstName}! ${
             loan?.lender_name || "The lender"
@@ -506,12 +510,10 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
         setConsent(false);
         setErrors({});
         onClose();
+      } else if (result.error) {
+        throw new Error(result.error.message || JSON.stringify(result.error));
       } else {
-        throw new Error(
-          response.data?.message ||
-            response.error?.message ||
-            "Failed to submit"
-        );
+        throw new Error("Failed to submit");
       }
     } catch (error: any) {
       console.error("Interest submission error:", error);

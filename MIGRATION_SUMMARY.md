@@ -94,7 +94,7 @@ src/components/
 │   ├── LoanCard.tsx
 │   ├── LoanFilters.tsx
 │   └── ...
-└── ai-loan-path/            # AI chat components
+└── chat-journey/            # AI chat components
     ├── ChatBubble.tsx
     ├── LoanCard.tsx
     ├── OptionButton.tsx
@@ -192,7 +192,7 @@ merged-loan-app/
 │   ├── components/
 │   │   ├── ui/                    # 52 shadcn/ui components
 │   │   ├── edu-loan-guide/        # 10 components
-│   │   └── ai-loan-path/          # 9 components
+│   │   └── chat-journey/          # 9 components
 │   ├── layouts/                   # 2 layout components
 │   ├── pages/                     # 6 pages
 │   ├── store/                     # Redux store + 2 slices

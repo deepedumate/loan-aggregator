@@ -13,7 +13,7 @@ const loanProductClient = createApiClient({
 });
 
 export const loanProductApi = loanProductClient.instance;
-
+console.log(16666, import.meta.env.VITE_API_URL);
 interface GetLoanProductsParams {
   page: number;
   size: number;

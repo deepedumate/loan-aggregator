@@ -20,7 +20,7 @@ merged-loan-app/
 │   ├── components/
 │   │   ├── ui/                    # Shared UI components (shadcn/ui)
 │   │   ├── edu-loan-guide/        # Edu Loan Guide specific components
-│   │   └── ai-loan-path/          # AI Loan Path specific components
+│   │   └── chat-journey/          # AI Loan Path specific components
 │   ├── layouts/
 │   │   ├── EduLoanGuideLayout.tsx # Layout with header/footer
 │   │   └── AILoanPathLayout.tsx   # Minimal layout for chat interface
@@ -49,11 +49,11 @@ merged-loan-app/
 
 ### Edu Loan Guide Routes (with Header/Footer)
 - `/` - Home page (redirects to /loans)
-- `/loans` - Loan aggregator page
-- `/loans/:id` - Individual loan details
+- `/loan-offers` - Loan aggregator page
+- `/loan-offers/:id` - Individual loan details
 
 ### AI Loan Path Routes (minimal layout)
-- `/ai-loan-path` - AI-powered loan recommendation chat
+- `/loan-application` - AI-powered loan recommendation chat
 
 ## Installation
 
