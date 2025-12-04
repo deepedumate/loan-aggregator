@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import Sidebar from "../components/student/Sidebar";
-import HeaderBar from "../components/student/HeaderBar";
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/student/Sidebar';
+import HeaderBar from '../components/student/HeaderBar';
 
 export default function StudentLayout() {
   return (
