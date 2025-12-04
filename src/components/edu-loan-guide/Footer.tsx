@@ -8,12 +8,19 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <GraduationCap className="h-6 w-6 text-primary" />
-              <span className="font-heading text-lg font-bold">Edumate</span>
-            </div>
+            <NavLink
+              to="/"
+              className="flex items-center gap-2 font-heading text-xl font-bold text-foreground hover:text-primary transition-colors"
+            >
+              <img
+                src="/edumate_logo.png"
+                alt="Edumate logo"
+                className="h-6 ml-1"
+              />
+            </NavLink>
             <p className="text-sm text-muted-foreground">
-              Your trusted partner in finding the perfect education loan for your academic journey.
+              Your trusted partner in finding the perfect education loan for
+              your academic journey.
             </p>
           </div>
 
@@ -22,12 +29,18 @@ export const Footer = () => {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <NavLink to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <NavLink
+                  to="/"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/loan-offers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <NavLink
+                  to="/loan-offers"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Loan Aggregator
                 </NavLink>
               </li>
@@ -41,7 +54,9 @@ export const Footer = () => {
               <li className="text-sm text-muted-foreground">About Us</li>
               <li className="text-sm text-muted-foreground">FAQs</li>
               <li className="text-sm text-muted-foreground">Privacy Policy</li>
-              <li className="text-sm text-muted-foreground">Terms of Service</li>
+              <li className="text-sm text-muted-foreground">
+                Terms of Service
+              </li>
             </ul>
           </div>
 

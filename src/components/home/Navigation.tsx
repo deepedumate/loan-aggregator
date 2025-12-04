@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, GraduationCap, Phone, Mail } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Navigation = () => {
   const navigate = useNavigate();
@@ -34,14 +34,17 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-heading text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Edumate
-            </span>
-          </div>
+          <NavLink
+            to="/"
+            className="flex items-center gap-2 font-heading text-xl font-bold text-foreground hover:text-primary transition-colors"
+          >
+            {/* <GraduationCap className="h-6 w-6 text-primary" /> */}
+            <img
+              src="/edumate_logo.png"
+              alt="Edumate logo"
+              className="h-6 ml-1"
+            />
+          </NavLink>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">

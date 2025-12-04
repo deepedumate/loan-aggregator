@@ -13,13 +13,19 @@ const AILoanHeader = () => {
     dispatch(resetChat());
   };
   return (
-    <header className="border-b border-border bg-background sticky top-0 z-50 flex-shrink-0 backdrop-blur-sm bg-background/95">
+    <header className="border-b border-border sticky top-0 z-50 flex-shrink-0 backdrop-blur-sm bg-background/95">
       <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg gradient-primary flex items-center justify-center transition-transform duration-300 hover:scale-110" />
           <div>
-            <img src="/edumate_logo.png" alt="Edumate logo" className="h-8 ml-1" />
-            <p className="text-[11px] text-muted-foreground font-medium">Smart Education Financing</p>
+            <img
+              src="/edumate_logo.png"
+              alt="Edumate logo"
+              className="h-8 ml-1"
+            />
+            <p className="text-[11px] text-muted-foreground font-medium">
+              Smart Education Financing
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -32,7 +38,7 @@ const AILoanHeader = () => {
               <span className="font-semibold text-accent">12+</span> lenders
             </div>
           </div> */}
-          {step != 'welcome' && (
+          {step != "welcome" && (
             <Button
               variant="outline"
               size="sm"
