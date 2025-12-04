@@ -29,6 +29,7 @@ import {
   Notifications,
   Profile,
 } from "./pages/student";
+import ContactUsPage from "./pages/ContactUs";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
             <Routes>
               <Route element={<HomeLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/contact-us" element={<ContactUsPage />} />
               </Route>
               {/* Contact Us */}
               <Route path="/" element={<Home />} />
