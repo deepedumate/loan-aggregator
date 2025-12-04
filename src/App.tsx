@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // import { ThemeProvider } from "next-themes";
 import { Provider } from "react-redux";
 import { store } from "@/store";
@@ -20,6 +20,8 @@ import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/chat-journey/ThemeProvider";
 import { HomeLayout } from "./layouts/HomeLayout";
 import Login from "./pages/Login";
+import StudentLayout from "./layouts/StudentLayout";
+import { Applications, Compare, Dashboard, Documents, Notifications, Profile } from "./pages/student";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,18 @@ const App = () => (
               <Route element={<HomeLayout />}>
                 <Route path="/" element={<Home />} />
               </Route>
+              {/* Student Portal Routes */}
+        <Route path="/student" element={<StudentLayout />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="applications" element={<Applications />} />
+          <Route path="compare" element={<Compare />} />
+          <Route path="documents" element={<Documents />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="profile" element={<Profile />} />
+          
+          {/* Redirect /student to /student/dashboard */}
+          <Route index element={<Navigate to="dashboard" replace />} />
+        </Route>
               <Route path="/login" element={<Login />} />
               {/* Edu Loan Guide Routes with Header/Footer Layout */}
               <Route element={<LoanListLayout />}>
