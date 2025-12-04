@@ -10,7 +10,7 @@ import {
   setOtpCountdown,
   updateFormData,
 } from "@/store/slices/chatSlice";
-import { signup as signupUser } from "@/store/slices/contactAuthSlice";
+import { login, signup as signupUser } from "@/store/slices/contactAuthSlice";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +47,7 @@ import {
 import { ThemeToggle } from "@/components/chat-journey/ThemeToggle";
 import { Logo } from "@/components/ui/logo";
 import { apiService } from "@/lib/apiService";
+import { LoginPayload } from "@/services/contactUser";
 
 const countryCodes = [
   { code: "+91", country: "India", flag: "🇮🇳", iso: "IN", length: 10 },
@@ -103,76 +104,83 @@ export default function Login() {
   const isTyping = useSelector((state: RootState) => state.chat.isTyping);
 
   // Helper function to prepare contact payload for signup
-  // Helper function to prepare contact payload for signup
+  // const prepareContactPayload = (formData: any) => {
+  //   const phoneNumber = formData.phone.replace(/\+/g, "");
+  //   const submissionDate = new Date().toISOString();
+  //   const userAgent =
+  //     typeof navigator !== "undefined" ? navigator.userAgent : "";
+  //   const referrer = typeof document !== "undefined" ? document.referrer : "";
+
+  //   const payload: Record<string, any> = {
+  //     phoneNumber,
+  //     utm_campaign: "login",
+  //     formType: "login",
+  //     submissionDate,
+  //     userAgent,
+  //     referrer,
+  //   };
+
+  //   // Only add optional fields if they exist in formData
+  //   if (formData.studyLevel) {
+  //     const mapping: Record<string, string> = {
+  //       undergraduate: "Bachelors",
+  //       graduate_mba: "Masters",
+  //       graduate_masters: "Masters",
+  //       phd: "PhD",
+  //     };
+  //     payload.levelOfEducation =
+  //       mapping[formData.studyLevel] || formData.studyLevel;
+  //   }
+
+  //   if (formData.studyDestination) {
+  //     payload.studyDestination = formData.studyDestination;
+  //   }
+
+  //   if (formData.loanAmount) {
+  //     payload.loanAmount = formData.loanAmount.toString();
+  //   }
+
+  //   if (formData.currency) {
+  //     payload.baseCurrency = formData.currency;
+  //     payload.studyDestinationCurrency = formData.currency;
+  //     payload.selectedLoanCurrency = formData.currency;
+  //   }
+
+  //   if (formData.intendedMonth) {
+  //     const monthNames = [
+  //       "January",
+  //       "February",
+  //       "March",
+  //       "April",
+  //       "May",
+  //       "June",
+  //       "July",
+  //       "August",
+  //       "September",
+  //       "October",
+  //       "November",
+  //       "December",
+  //     ];
+  //     payload.intakeMonth = monthNames[formData.intendedMonth - 1];
+  //   }
+
+  //   if (formData.intendedYear) {
+  //     payload.intakeYear = formData.intendedYear.toString();
+  //   }
+
+  //   if (formData.loanType) {
+  //     payload.loanPreference =
+  //       formData.loanType === "secured" ? "Secured" : "Unsecured";
+  //   }
+
+  //   return payload;
+  // };
+
   const prepareContactPayload = (formData: any) => {
     const phoneNumber = formData.phone.replace(/\+/g, "");
-    const submissionDate = new Date().toISOString();
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    const referrer = typeof document !== "undefined" ? document.referrer : "";
-
-    const payload: Record<string, any> = {
+    const payload: LoginPayload = {
       phoneNumber,
-      utm_campaign: "login",
-      formType: "login",
-      submissionDate,
-      userAgent,
-      referrer,
     };
-
-    // Only add optional fields if they exist in formData
-    if (formData.studyLevel) {
-      const mapping: Record<string, string> = {
-        undergraduate: "Bachelors",
-        graduate_mba: "Masters",
-        graduate_masters: "Masters",
-        phd: "PhD",
-      };
-      payload.levelOfEducation =
-        mapping[formData.studyLevel] || formData.studyLevel;
-    }
-
-    if (formData.studyDestination) {
-      payload.studyDestination = formData.studyDestination;
-    }
-
-    if (formData.loanAmount) {
-      payload.loanAmount = formData.loanAmount.toString();
-    }
-
-    if (formData.currency) {
-      payload.baseCurrency = formData.currency;
-      payload.studyDestinationCurrency = formData.currency;
-      payload.selectedLoanCurrency = formData.currency;
-    }
-
-    if (formData.intendedMonth) {
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      payload.intakeMonth = monthNames[formData.intendedMonth - 1];
-    }
-
-    if (formData.intendedYear) {
-      payload.intakeYear = formData.intendedYear.toString();
-    }
-
-    if (formData.loanType) {
-      payload.loanPreference =
-        formData.loanType === "secured" ? "Secured" : "Unsecured";
-    }
-
     return payload;
   };
 
@@ -311,7 +319,7 @@ export default function Login() {
           console.log("Saving contact data:", contactPayload);
 
           // Call signup thunk to save contact data
-          const result = await dispatch(signupUser(contactPayload) as any);
+          const result = await dispatch(login(contactPayload) as any);
 
           if (result.payload) {
             console.log("Contact saved successfully:", result.payload);

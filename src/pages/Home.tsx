@@ -1,5 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowRight, Shield, TrendingDown, Clock, CheckCircle2, Sparkles, GraduationCap, BadgeCheck, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Shield,
+  TrendingDown,
+  Clock,
+  CheckCircle2,
+  Sparkles,
+  GraduationCap,
+  BadgeCheck,
+  ChevronRight,
+} from "lucide-react";
 
 const HomePage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,9 +31,11 @@ const HomePage = () => {
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
           {/* Badge */}
-          <div 
+          <div
             className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 transition-all duration-700 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <Sparkles className="w-4 h-4" />
@@ -31,9 +43,11 @@ const HomePage = () => {
           </div>
 
           {/* Main Headline */}
-          <h1 
+          <h1
             className={`font-heading text-6xl md:text-7xl lg:text-8xl font-bold mb-6 transition-all duration-700 delay-100 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
@@ -46,19 +60,23 @@ const HomePage = () => {
           </h1>
 
           {/* Subheadline */}
-          <p 
+          <p
             className={`text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 transition-all duration-700 delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
-            Get personalized education loan offers from India's top lenders. 
+            Get personalized education loan offers from India's top lenders.
             Compare rates, apply instantly, and secure your dream education.
           </p>
 
           {/* CTA Buttons */}
-          <div 
+          <div
             className={`flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 transition-all duration-700 delay-300 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <button className="group relative px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold text-lg hover:bg-primary/90 transition-all hover:shadow-xl hover:scale-105 overflow-hidden">
@@ -68,7 +86,7 @@ const HomePage = () => {
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-primary-light to-primary opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
-            
+
             <button className="px-8 py-4 bg-secondary text-secondary-foreground rounded-xl font-semibold text-lg hover:bg-secondary/80 transition-all hover:shadow-lg flex items-center gap-2">
               <GraduationCap className="w-5 h-5" />
               Calculate Eligibility
@@ -76,9 +94,11 @@ const HomePage = () => {
           </div>
 
           {/* Trust Indicators */}
-          <div 
+          <div
             className={`flex flex-wrap justify-center items-center gap-8 text-sm text-muted-foreground transition-all duration-700 delay-400 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
             }`}
           >
             <div className="flex items-center gap-2">
@@ -107,14 +127,15 @@ const HomePage = () => {
       {/* Benefits Section */}
       <section className="py-24 px-6 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">
               Why Students Choose Us
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We've simplified the entire education loan process into three simple steps
+              We've simplified the entire education loan process into three
+              simple steps
             </p>
           </div>
 
@@ -128,7 +149,8 @@ const HomePage = () => {
                 Lowest Interest Rates
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Compare offers from 50+ lenders to find the most competitive interest rates starting from just 8.5% per annum.
+                Compare offers from 50+ lenders to find the most competitive
+                interest rates starting from just 8.5% per annum.
               </p>
               <div className="mt-6 flex items-center text-primary font-medium group-hover:gap-2 transition-all">
                 <span>Learn more</span>
@@ -145,7 +167,8 @@ const HomePage = () => {
                 Instant Approvals
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Get loan pre-approval in under 2 minutes. Upload documents and receive sanction letters within 24 hours.
+                Get loan pre-approval in under 2 minutes. Upload documents and
+                receive sanction letters within 24 hours.
               </p>
               <div className="mt-6 flex items-center text-accent font-medium group-hover:gap-2 transition-all">
                 <span>Learn more</span>
@@ -162,7 +185,8 @@ const HomePage = () => {
                 100% Secure Process
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Your data is encrypted with bank-grade security. We never share your information without your explicit consent.
+                Your data is encrypted with bank-grade security. We never share
+                your information without your explicit consent.
               </p>
               <div className="mt-6 flex items-center text-success font-medium group-hover:gap-2 transition-all">
                 <span>Learn more</span>
@@ -198,7 +222,8 @@ const HomePage = () => {
                 Share Your Details
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Tell us about your course, university, and financial requirements. Takes less than 2 minutes.
+                Tell us about your course, university, and financial
+                requirements. Takes less than 2 minutes.
               </p>
             </div>
 
@@ -211,7 +236,8 @@ const HomePage = () => {
                 Compare Offers
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Review personalized loan offers from multiple lenders. Compare interest rates, tenure, and terms.
+                Review personalized loan offers from multiple lenders. Compare
+                interest rates, tenure, and terms.
               </p>
             </div>
 
@@ -224,7 +250,8 @@ const HomePage = () => {
                 Get Funded
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Submit documents, complete verification, and receive funds directly in your account.
+                Submit documents, complete verification, and receive funds
+                directly in your account.
               </p>
             </div>
           </div>
@@ -275,16 +302,16 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/10" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
-        
+
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="font-heading text-4xl md:text-6xl font-bold mb-6">
             Ready to Fund Your Dreams?
           </h2>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Join thousands of students who trusted us with their education financing. 
-            Get started in less than 2 minutes.
+            Join thousands of students who trusted us with their education
+            financing. Get started in less than 2 minutes.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button className="group px-10 py-5 bg-primary text-primary-foreground rounded-xl font-semibold text-lg hover:bg-primary/90 transition-all hover:shadow-xl hover:scale-105">
               <span className="flex items-center gap-2">
@@ -292,7 +319,7 @@ const HomePage = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            
+
             <button className="px-10 py-5 bg-card border-2 border-border text-foreground rounded-xl font-semibold text-lg hover:bg-secondary transition-all">
               Talk to Expert
             </button>
