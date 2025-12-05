@@ -21,7 +21,15 @@ import { ThemeProvider } from "./components/chat-journey/ThemeProvider";
 import { HomeLayout } from "./layouts/HomeLayout";
 import Login from "./pages/Login";
 import StudentLayout from "./layouts/StudentLayout";
-import { Applications, Compare, Dashboard, Documents, Notifications, Profile } from "./pages/student";
+import {
+  Applications,
+  Compare,
+  Dashboard,
+  Documents,
+  Notifications,
+  Profile,
+} from "./pages/student";
+import ContactUsPage from "./pages/ContactUs";
 
 const queryClient = new QueryClient();
 
@@ -36,19 +44,23 @@ const App = () => (
             <Routes>
               <Route element={<HomeLayout />}>
                 <Route path="/" element={<Home />} />
+                <Route path="/contact-us" element={<ContactUsPage />} />
               </Route>
+              {/* Contact Us */}
+              <Route path="/" element={<Home />} />
+
               {/* Student Portal Routes */}
-        <Route path="/student" element={<StudentLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="applications" element={<Applications />} />
-          <Route path="compare" element={<Compare />} />
-          <Route path="documents" element={<Documents />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="profile" element={<Profile />} />
-          
-          {/* Redirect /student to /student/dashboard */}
-          <Route index element={<Navigate to="dashboard" replace />} />
-        </Route>
+              <Route path="/student" element={<StudentLayout />}>
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="applications" element={<Applications />} />
+                <Route path="compare" element={<Compare />} />
+                <Route path="documents" element={<Documents />} />
+                <Route path="notifications" element={<Notifications />} />
+                <Route path="profile" element={<Profile />} />
+
+                {/* Redirect /student to /student/dashboard */}
+                <Route index element={<Navigate to="dashboard" replace />} />
+              </Route>
               <Route path="/login" element={<Login />} />
               {/* Edu Loan Guide Routes with Header/Footer Layout */}
               <Route element={<LoanListLayout />}>
