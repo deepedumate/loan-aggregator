@@ -1,0 +1,333 @@
+import React from "react";
+import { motion, spring } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { GraduationCap, Globe, Star, MapPin, Award } from "lucide-react";
+
+/**
+ * STUDY ABROAD SECTION COMPONENT
+ *
+ * Premium Features:
+ * - Split layout with content and interactive flag grid
+ * - Animated feature cards with icons
+ * - Glassmorphic flag containers
+ * - Hover effects with scale and shadow
+ * - Gradient backgrounds and overlays
+ * - Stats cards with animations
+ */
+
+const StudyAbroadSection = () => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const features = [
+    {
+      icon: GraduationCap,
+      text: "All Degree Levels",
+      description: "From UG to PhD programs",
+      gradient: "from-blue-500 to-blue-600",
+    },
+    {
+      icon: Globe,
+      text: "Global Destinations",
+      description: "30+ countries available",
+      gradient: "from-green-500 to-green-600",
+    },
+    {
+      icon: Star,
+      text: "Best Loan Options",
+      description: "Competitive rates & terms",
+      gradient: "from-purple-500 to-purple-600",
+    },
+    {
+      icon: Award,
+      text: "Top Universities",
+      description: "3000+ partner institutions",
+      gradient: "from-orange-500 to-orange-600",
+    },
+  ];
+
+  const countries = [
+    { name: "USA", flag: "/images/flags2/usa.jpg", programs: "250+" },
+    { name: "UK", flag: "/images/flags2/uk.jpg", programs: "150+" },
+    { name: "Canada", flag: "/images/flags2/canada.jpg", programs: "150+" },
+    {
+      name: "Australia",
+      flag: "/images/flags2/australia.jpg",
+      programs: "50+",
+    },
+    { name: "Germany", flag: "/images/flags2/germany.jpg", programs: "200+" },
+    { name: "France", flag: "/images/flags2/france.jpg", programs: "100+" },
+    { name: "India", flag: "/images/flags2/india.jpg", programs: "500+" },
+    { name: "Ireland", flag: "/images/flags2/ireland.jpg", programs: "20+" },
+  ];
+
+  const benefits = [
+    { text: "No collateral for loans up to ₹40L", icon: "💰" },
+    { text: "Competitive interest rates from 8.5%", icon: "📈" },
+    { text: "Flexible repayment options", icon: "🔄" },
+    { text: "Quick approval process", icon: "⚡" },
+  ];
+
+  const statsDetails = [
+    {
+      number: "30+",
+      label: "Countries",
+      icon: "🌍",
+      color: "text-blue-600 dark:text-blue-400",
+    },
+    {
+      number: "3000+",
+      label: "Universities",
+      icon: "🏛️",
+      color: "text-green-600 dark:text-green-400",
+    },
+    {
+      number: "₹3Cr",
+      label: "Max. Loan Amount",
+      icon: "💰",
+      color: "text-purple-600 dark:text-purple-400",
+    },
+  ];
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: spring,
+        stiffness: 100,
+      },
+    },
+  };
+
+  return (
+    <section
+      className="py-16 md:py-20 bg-background relative overflow-hidden"
+      ref={ref}
+    >
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-accent/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-3xl" />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          {/* Content Side */}
+          <motion.div
+            className="order-2 lg:order-1"
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Tag */}
+            <motion.div
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-accent/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-8 border border-primary/20"
+              whileHover={{ scale: 1.05 }}
+            >
+              <MapPin className="w-4 h-4" />
+              <span>Global Education Partner</span>
+            </motion.div>
+
+            {/* Main Heading */}
+            <div className="mb-8">
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                <span className="block text-foreground mb-2">
+                  Your Gateway to
+                </span>
+                <span className="block bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent">
+                  Global Education
+                </span>
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
+                From undergraduate degrees to PhD programs, we provide
+                comprehensive loan solutions for your international education
+                journey.
+              </p>
+            </div>
+
+            {/* Features Grid */}
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10"
+              variants={containerVariants}
+              initial="hidden"
+              animate={inView ? "visible" : "hidden"}
+            >
+              {features.map((feature, index) => (
+                <motion.div key={index} variants={itemVariants}>
+                  <motion.div
+                    className="bg-card/60 backdrop-blur-xl border border-border rounded-2xl p-4 hover:shadow-xl transition-all duration-300"
+                    whileHover={{ y: -4, scale: 1.02 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <motion.div
+                        className={`p-2 rounded-xl bg-gradient-to-r ${feature.gradient}`}
+                        whileHover={{ rotate: 360 }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        <feature.icon size={20} className="text-white" />
+                      </motion.div>
+                      <div>
+                        <div className="font-semibold text-foreground text-sm">
+                          {feature.text}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {feature.description}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Benefits */}
+            <div className="mb-10">
+              <h3 className="text-lg font-bold text-foreground mb-4">
+                Why Choose Our Loan Services?
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {benefits.map((benefit, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-center gap-3 text-sm"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <span className="text-lg">{benefit.icon}</span>
+                    <span className="text-muted-foreground">
+                      {benefit.text}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Description */}
+            <p className="text-md text-muted-foreground mb-10 leading-relaxed">
+              No matter your degree or destination—US, UK, Canada, Australia, or
+              Europe—we offer the{" "}
+              <span className="font-semibold text-foreground bg-primary/10 px-2 py-1 rounded">
+                best loan options
+              </span>{" "}
+              tailored to your program and financial needs.
+            </p>
+          </motion.div>
+
+          {/* Flag Grid Side */}
+          <motion.div
+            className="order-1 lg:order-2"
+            initial={{ opacity: 0, x: 30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="relative">
+              {/* Background Card */}
+              <div className="bg-card/60 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-border">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-foreground mb-2">
+                    Study Destinations
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Choose from 15+ countries worldwide
+                  </p>
+                </div>
+
+                {/* Countries Grid */}
+                <motion.div
+                  className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-4 gap-4"
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate={inView ? "visible" : "hidden"}
+                >
+                  {countries.map((country, index) => (
+                    <motion.div key={index} variants={itemVariants}>
+                      <motion.div
+                        className="bg-card rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 border border-border group cursor-pointer"
+                        whileHover={{ y: -4, scale: 1.05 }}
+                      >
+                        <div className="text-center">
+                          {/* Flag */}
+                          <div className="w-12 h-12 mx-auto mb-3 rounded-full overflow-hidden ring-2 ring-border group-hover:ring-primary transition-all duration-300">
+                            <img
+                              src={country.flag}
+                              alt={`${country.name} flag`}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          </div>
+
+                          {/* Country name */}
+                          <div className="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">
+                            {country.name}
+                          </div>
+
+                          {/* Programs count */}
+                          <div className="text-xs text-muted-foreground">
+                            {country.programs}
+                          </div>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Stats Section */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-20 pt-12 border-t border-border"
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+        >
+          {statsDetails.map((stat, index) => (
+            <motion.div
+              key={index}
+              className="group text-center"
+              variants={itemVariants}
+            >
+              <motion.div
+                className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-border"
+                whileHover={{ y: -4 }}
+              >
+                <motion.div
+                  className="text-2xl mb-2"
+                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {stat.icon}
+                </motion.div>
+                <div className={`text-4xl font-bold mb-2 ${stat.color}`}>
+                  {stat.number}
+                </div>
+                <div className="text-muted-foreground text-sm font-medium">
+                  {stat.label}
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default StudyAbroadSection;
