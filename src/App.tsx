@@ -29,7 +29,12 @@ import {
   Notifications,
   Profile,
 } from "./pages/student";
-import ContactUsPage from "./pages/ContactUs";
+import ContactUsPage from "./components/contact/ContactUs";
+import AboutPage from "./components/about/AboutsPage";
+import FAQPage from "./components/faq/FaqPage";
+import ShowcaseInterest from "./components/showcase-interest/ShowcaseInterest";
+import StudentLoan from "./components/student-loan/StudentLoan";
+import PartnerUs from "./components/partnerWithUs/PartnerUs";
 
 const queryClient = new QueryClient();
 
@@ -45,6 +50,14 @@ const App = () => (
               <Route element={<HomeLayout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/contact-us" element={<ContactUsPage />} />
+                <Route path="/about-us" element={<AboutPage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/partner-with-us" element={<PartnerUs />} />
+                <Route
+                  path="/showcase-interest"
+                  element={<ShowcaseInterest />}
+                />
+                <Route path="/student-loan" element={<StudentLoan />} />
               </Route>
               {/* Contact Us */}
               <Route path="/" element={<Home />} />

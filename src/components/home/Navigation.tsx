@@ -17,10 +17,10 @@ const Navigation = () => {
   }, []);
 
   const navLinks = [
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Lenders", href: "#lenders" },
+    { label: "Home", href: "/" },
+    { label: "FAQ", href: "/faq" },
     { label: "Eligibility", href: "#eligibility" },
-    { label: "About Us", href: "#about" },
+    { label: "About Us", href: "/about-us" },
   ];
 
   return (
@@ -49,19 +49,22 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.href}
-                href={link.href}
+                to={link.href}
                 className="text-foreground/80 hover:text-foreground font-medium transition-colors"
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </div>
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-4">
-            <button className="px-6 py-2.5 text-foreground font-medium hover:text-primary transition-colors flex items-center gap-2">
+            <button
+              onClick={() => navigate("/contact-us")}
+              className="px-6 py-2.5 text-foreground font-medium hover:text-primary transition-colors flex items-center gap-2"
+            >
               <Phone className="w-4 h-4" />
               Contact
             </button>
