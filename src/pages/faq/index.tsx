@@ -10,18 +10,7 @@ import {
   Users,
   Clock,
 } from "lucide-react";
-import FaqHeader from "./FaqHeader";
-
-/**
- * FAQ Page Component - ChatJourney Theme Style
- *
- * Features:
- * - Clean theme-based design (no gradients)
- * - Smooth Framer Motion animations
- * - Lucide React icons only
- * - Fully responsive for all devices
- * - Dark mode support
- */
+import FaqHeader from "@/components/faq/FaqHeader";
 
 interface FAQ {
   id: string;

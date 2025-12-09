@@ -1,22 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Sparkles, TrendingUp } from "lucide-react";
-import AboutUsHeader from "./AboutUsHeader";
-import LeadershipCarousel from "./LeadershipCarousel";
-import MissionCard from "./MissionCard";
-import ValuesSection from "./ValueSection";
-import VisionCard from "./VisionCard";
+import AboutUsHeader from "@/components/about/AboutUsHeader";
+import VisionCard from "@/components/about/VisionCard";
+import MissionCard from "@/components/about/MissionCard";
+import ValuesSection from "@/components/about/ValueSection";
+import LeadershipCarousel from "@/components/about/LeadershipCarousel"; 
 
-/**
- * About Page Component - ChatJourney Theme Style
- *
- * Features:
- * - Clean theme-based design (no gradients)
- * - Smooth animations
- * - Lucide React icons only
- * - Fully responsive
- * - Dark mode support
- */
 const AboutPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background transition-colors duration-300">
