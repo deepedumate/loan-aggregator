@@ -32,24 +32,6 @@ const ContactMap: React.FC = () => {
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const transportOptions = [
-    {
-      icon: Train,
-      type: "Metro",
-      info: "Lower Parel Station - 5 min walk",
-    },
-    {
-      icon: Bus,
-      type: "Bus",
-      info: "Multiple routes available",
-    },
-    {
-      icon: Car,
-      type: "Taxi",
-      info: "Uber/Ola pickup point nearby",
-    },
-  ];
-
   const locationFeatures = [
     {
       icon: MapPin,

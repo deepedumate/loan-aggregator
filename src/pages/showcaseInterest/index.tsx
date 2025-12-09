@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, CheckCircle2 } from "lucide-react";
 import HomeHeroSection from "@/components/showcaseInterest/HomeHeroSection";
-import WhyEdumate from "@/components/showcaseInterest/WhyEdumate";
+import WhyEdumate from "@/components/home/Whyedumate";
 import ProcessSteps from "@/components/showcaseInterest/ProcessStep";
 import StudyAbroadSection from "@/components/showcaseInterest/StudyAbroadSection";
 import UniversityLogosSection from "@/components/showcaseInterest/UniversityLogosSection";
