@@ -62,12 +62,7 @@ interface LoanFiltersProps {
   onDeletePreset: (presetId: string) => void;
 }
 
-const STUDY_LEVELS = [
-  "Undergraduate",
-  "Graduate - MBA",
-  "Graduate - Masters",
-  "PhD",
-];
+const STUDY_LEVELS = ["Undergraduate", "MBA", "Specialised Masters", "PhD"];
 
 const STATUS_OPTIONS = [
   "Applied",
@@ -156,22 +151,23 @@ export function LoanFilters({
     }
 
     // Extract study level from formData with proper formatting
+    // Extract study level from formData with proper formatting
     if (chat.formData?.studyLevel) {
       let studyLevel = chat.formData.studyLevel.toLowerCase();
 
-      // Handle different study level formats to match dropdown values
-      // The dropdown uses: undergraduate, graduate_-_mba, graduate_-_masters, phd
-      if (studyLevel.includes("masters")) {
-        studyLevel = "graduate_-_masters";
-      } else if (studyLevel.includes("mba")) {
-        studyLevel = "graduate_-_mba";
-      } else if (studyLevel.includes("phd") || studyLevel.includes("ph.d")) {
-        studyLevel = "phd";
+      // Map chat values to dropdown display values
+      if (studyLevel.includes("masters") || studyLevel === "graduate_masters") {
+        studyLevel = "Specialised Masters";
+      } else if (studyLevel.includes("mba") || studyLevel === "graduate_mba") {
+        studyLevel = "MBA";
+      } else if (studyLevel.includes("phd") || studyLevel === "ph.d") {
+        studyLevel = "PhD";
       } else if (
         studyLevel.includes("undergraduate") ||
-        studyLevel.includes("undergrad")
+        studyLevel.includes("undergrad") ||
+        studyLevel === "undergraduate"
       ) {
-        studyLevel = "undergraduate";
+        studyLevel = "Undergraduate";
       }
 
       autoFilters.studyLevel = studyLevel;
@@ -506,10 +502,7 @@ export function LoanFilters({
                   </SelectTrigger>
                   <SelectContent>
                     {STUDY_LEVELS.map((level) => (
-                      <SelectItem
-                        key={level}
-                        value={level.toLowerCase().replace(/\s+/g, "_")}
-                      >
+                      <SelectItem key={level} value={level}>
                         {level}
                       </SelectItem>
                     ))}

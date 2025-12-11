@@ -345,12 +345,12 @@ const ChatJourney = () => {
   // Helper function to map study level
   const mapStudyLevel = (studyLevel: string): string => {
     const mapping: Record<string, string> = {
-      undergraduate: "Bachelors",
-      graduate_mba: "Masters",
-      graduate_masters: "Masters",
+      undergraduate: "Undergraduate",
+      graduate_mba: "MBA",
+      graduate_masters: "Specialised Masters",
       phd: "PhD",
     };
-    return mapping[studyLevel] || "Bachelor";
+    return mapping[studyLevel] || "Undergraduate";
   };
 
   // Helper function to get month name
@@ -508,6 +508,7 @@ const ChatJourney = () => {
   };
 
   const handleStudyLevel = async (level: string) => {
+    console.warn("Selected study level:", level);
     const labels: Record<string, string> = {
       undergraduate: "Undergraduate",
       graduate_mba: "MBA",
