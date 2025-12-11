@@ -757,8 +757,6 @@ export default function LoanList() {
 
       {/* Product Tour */}
       <ProductTour />
-
-      {/* <Footer /> */}
     </div>
   );
 }

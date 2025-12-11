@@ -42,8 +42,8 @@ export function LoanCard({
   );
   const maxLoanAmount =
     parseFloat(
-      loan.financial_terms?.maximum_loan_amount_unsecured ||
-        loan.financial_terms?.maximum_loan_amount_secured ||
+      loan.financial_terms?.maximum_loan_amount_secured ||
+        loan.financial_terms?.maximum_loan_amount_unsecured ||
         "0"
     ) / 100000; // Convert to lakhs
   const repaymentPeriodMonths =
