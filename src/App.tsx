@@ -63,6 +63,7 @@ const App = () => (
                   element={<ShowcaseInterest />}
                 />
                 <Route path="/student-loan" element={<StudentLoan />} />
+                <Route path="/login" element={<Login />} />
               </Route>
               {/* Student Portal Routes */}
               <Route path="/student" element={<StudentLayout />}>
@@ -76,18 +77,18 @@ const App = () => (
                 {/* Redirect /student to /student/dashboard */}
                 <Route index element={<Navigate to="dashboard" replace />} />
               </Route>
-              <Route path="/login" element={<Login />} />
               {/* Edu Loan Guide Routes with Header/Footer Layout */}
-              <Route element={<LoanListLayout />}>
+              <Route element={<HomeLayout />}>
                 <Route path="/loan-offers" element={<LoanList />} />
                 <Route path="/loan-offers/:id" element={<LoanDetails />} />
               </Route>
 
               {/* AI Loan Path Routes with Minimal Layout */}
-              <Route element={<ChatJourneyLayout />}>
+              <Route element={<HomeLayout />}>
                 <Route path="/explore-loans" element={<ExploreLoans />} />
                 <Route path="/loan-application" element={<ChatJourney />} />
               </Route>
+
 
               {/* 404 Not Found */}
               <Route path="*" element={<NotFound />} />

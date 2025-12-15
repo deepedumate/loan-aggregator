@@ -166,6 +166,9 @@ const chatSlice = createSlice({
     resetChat: (state) => {
       return initialState;
     },
+    removeMessagesAfter: (state, action: PayloadAction<number>) => {
+      state.messages = state.messages.slice(0, action.payload + 1);
+    }
   },
 });
 
@@ -190,6 +193,7 @@ export const {
   setIsOtherProgramSelected,
   setCustomProgramName,
   resetChat,
+  removeMessagesAfter
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

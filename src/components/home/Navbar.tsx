@@ -198,12 +198,16 @@ export function Navbar() {
                   <ThemeToggle />
                   
                   {/* Login/Profile Button */}
-                  <Button 
-                    className="hidden sm:flex bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-5 h-10 rounded-lg shadow-sm hover:shadow-md transition-all"
-                  >
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                  </Button>
+                  {pathname === '/' && (
+                    <Link to="/login">
+                      <Button 
+                        className="hidden sm:flex bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-5 h-10 rounded-lg shadow-sm hover:shadow-md transition-all"
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Login
+                      </Button>
+                    </Link>
+                  )}
 
                   {/* Mobile Menu Toggle */}
                   <Button
@@ -283,12 +287,16 @@ export function Navbar() {
                   </div>
 
                   {/* Mobile Login Button */}
-                  <Button 
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-md sm:hidden"
-                  >
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                  </Button>
+                  {pathname === '/' && (
+                    <Link to="/login">
+                      <Button 
+                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-md sm:hidden"
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Login
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             )}

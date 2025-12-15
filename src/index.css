@@ -179,6 +179,15 @@ All colors MUST be HSL.
     font-family: 'Sora', 'Inter', system-ui, sans-serif;
     font-weight: 600;
   }
+
+  /* Chat Bubble Styles */
+  .chat-bubble-user {
+    @apply bg-gradient-to-br from-primary via-primary-light to-primary text-white rounded-2xl rounded-tr-md px-5 py-3.5 shadow-lg shadow-primary/20;
+  }
+
+  .chat-bubble-ai {
+    @apply bg-gradient-to-br from-card to-primary/5 text-foreground rounded-2xl rounded-tl-md px-5 py-3.5 border border-border/50 shadow-md backdrop-blur-lg;
+  }
 }
 
 @layer utilities {

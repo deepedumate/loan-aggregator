@@ -24,6 +24,7 @@ import {
   setCustomProgramName,
   resetChat,
   type Step,
+  removeMessagesAfter,
 } from "@/store/slices/chatSlice";
 import { signup as signupUser } from "@/store/slices/contactAuthSlice";
 import { ChatBubble } from "@/components/chat-journey/ChatBubble";
@@ -65,6 +66,11 @@ import { useToast } from "@/hooks/use-toast";
 import { apiService } from "@/lib/apiService";
 import { googleMapsService } from "@/lib/Googlemapsservice";
 import { ChatBackgroundLogoFloat, ChatBackgroundLogoScattered, ChatBackgroundLogoWatermark } from "@/components/chat-journey/Chatbackground";
+import { OptionsGrid } from "@/components/chat-journey/OptionsGrid";
+import { LoanAmountInput } from "@/components/chat-journey/LoanAmountInput";
+import { CompactCostBreakdownCard } from "@/components/chat-journey/Compactcostbreakdowncard";
+import { StreamlinedLoanAmountInput } from "@/components/chat-journey/Streamlinedloanamountinput";
+import { ProgramSelector } from "@/components/chat-journey/ProgramSelector";
 
 interface UniversitySuggestion {
   name: string; // "Harvard University, Cambridge, MA, USA"
@@ -127,6 +133,11 @@ const ChatJourney = () => {
   const customProgramName = useSelector(
     (state: RootState) => state.chat.customProgramName
   );
+  const totalProgramCost = useSelector(
+    (state: RootState) => state.chat.formData?.program?.total_program_cost || null
+
+  );
+
 
   // Local state only for Google Maps
   const [isGoogleMapsLoaded, setIsGoogleMapsLoaded] = useState(false);
@@ -415,6 +426,9 @@ const ChatJourney = () => {
 
     const editedMessage = messages[messageIndex];
     if (!editedMessage.step) return;
+
+    // Remove all messages after the edited message
+    dispatch(removeMessagesAfter(messageIndex-1));
 
     // Reset to that step
     dispatch(setStep(editedMessage.step));
@@ -1282,218 +1296,88 @@ const ChatJourney = () => {
                   )}
 
                   {step === "study-level" && !isTyping && (
-                    <div className="grid gap-2 py-4">
-                      <OptionButton
-                        label="Undergraduate"
-                        icon={<GraduationCap className="w-5 h-5" />}
-                        onClick={() => handleStudyLevel("undergraduate")}
-                      />
-                      <OptionButton
-                        label="MBA"
-                        icon={<Building2 className="w-5 h-5" />}
-                        onClick={() => handleStudyLevel("graduate_mba")}
-                      />
-                      <OptionButton
-                        label="Specialised Masters"
-                        icon={<GraduationCap className="w-5 h-5" />}
-                        onClick={() => handleStudyLevel("graduate_masters")}
-                      />
-                      <OptionButton
-                        label="PhD"
-                        icon={<GraduationCap className="w-5 h-5" />}
-                        onClick={() => handleStudyLevel("phd")}
-                      />
-                    </div>
+                        // <div className="grid gap-2 py-4">
+                          <OptionsGrid
+                            options={[
+                              {
+                                value: "undergraduate",
+                                label: "Undergraduate",
+                                icon: <GraduationCap className="w-5 h-5" />,
+                                description: "Bachelor's degree programs"
+                              },
+                              {
+                                value: "graduate_mba",
+                                label: "MBA",
+                                icon: <Building2 className="w-5 h-5" />,
+                                description: "Master of Business Administration",
+                                // badge: "Popular"
+                              },
+                              {
+                                value: "graduate_masters",
+                                label: "Specialised Masters",
+                                icon: <GraduationCap className="w-5 h-5" />,
+                                description: "Master's degree programs"
+                              },
+                              {
+                                value: "phd",
+                                label: "PhD",
+                                icon: <GraduationCap className="w-5 h-5" />,
+                                description: "Doctoral degree programs"
+                              },
+                            ]}
+                            onSelect={handleStudyLevel}
+                            selectedValue={formData.studyLevel}
+                            columns={2}
+                          />
+                        // </div>
                   )}
 
                   {step === "admit-status" && !isTyping && (
-                    <div className="grid gap-2 py-4">
-                      <OptionButton
-                        label="Applied"
-                        onClick={() => handleAdmitStatus("applied")}
-                      />
-                      <OptionButton
-                        label="Admitted"
-                        onClick={() => handleAdmitStatus("admitted")}
-                      />
-                      <OptionButton
-                        label="Yet to Apply"
-                        onClick={() => handleAdmitStatus("yet_to_apply")}
-                      />
-                      <OptionButton
-                        label="Deferred"
-                        onClick={() => handleAdmitStatus("deferred")}
-                      />
-                    </div>
+                        // <div className="grid gap-2 py-4">
+                          <OptionsGrid
+                            options={[
+                              { value: "applied", label: "Applied", description: "Application submitted" },
+                              { value: "admitted", label: "Admitted", description: "Offer received", 
+                                // badge: "Congrats!" 
+                              },
+                              { value: "yet_to_apply", label: "Yet to Apply", description: "Planning to apply" },
+                              { value: "deferred", label: "Deferred", description: "Postponed admission" },
+                            ]}
+                            onSelect={handleAdmitStatus}
+                            selectedValue={formData.admitStatus}
+                            columns={2}
+                          />
+                        // </div>
                   )}
 
                   {step === "intended-date" && !isTyping && (
-                    <div className="py-4">
+                    <div className={"grid gap-3 py-4 ml-[3.25rem] lg:ml-[3.75rem]"}>
                       <IntendedDateCard onSelect={handleIntendedDate} />
                     </div>
                   )}
 
-                  {step === "programs" &&
-                    !isTyping &&
-                    programData?.data?.programs && (
-                      <>
-                        <div className="flex items-center justify-between mb-3 py-2">
-                          <span className="text-xs text-muted-foreground">
-                            {programData.data.programs.length} program
-                            {programData.data.programs.length !== 1
-                              ? "s"
-                              : ""}{" "}
-                            found
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                const modes: Array<
-                                  "original" | "converted" | "both"
-                                > = ["original", "converted", "both"];
-                                const currentIndex =
-                                  modes.indexOf(currencyDisplayMode);
-                                const nextMode =
-                                  modes[(currentIndex + 1) % modes.length];
-                                dispatch(setCurrencyDisplayMode(nextMode));
-                              }}
-                              className="h-8 px-3 text-xs transition-all duration-300 hover:bg-primary/10 hover:border-primary/40 hover:shadow-sm group"
-                              title="Toggle currency display"
-                            >
-                              <ArrowLeftRight className="w-3 h-3 mr-1.5 transition-transform duration-300 group-hover:rotate-180" />
-                              <span className="transition-all duration-300 font-medium">
-                                {currencyDisplayMode === "original" &&
-                                  `${formData.currency} Only`}
-                                {currencyDisplayMode === "converted" &&
-                                  `${preferredCurrency} Only`}
-                                {currencyDisplayMode === "both" &&
-                                  `${formData.currency} + ${preferredCurrency}`}
-                              </span>
-                            </Button>
-                            <span className="text-xs text-muted-foreground">
-                              Convert to:
-                            </span>
-                            <Select
-                              value={preferredCurrency}
-                              onValueChange={(value) =>
-                                dispatch(setPreferredCurrency(value))
-                              }
-                            >
-                              <SelectTrigger className="w-28 h-8 text-xs">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="USD">🇺🇸 USD</SelectItem>
-                                <SelectItem value="EUR">🇪🇺 EUR</SelectItem>
-                                <SelectItem value="GBP">🇬🇧 GBP</SelectItem>
-                                <SelectItem value="INR">🇮🇳 INR</SelectItem>
-                                <SelectItem value="CAD">🇨🇦 CAD</SelectItem>
-                                <SelectItem value="AUD">🇦🇺 AUD</SelectItem>
-                                <SelectItem value="JPY">🇯🇵 JPY</SelectItem>
-                                <SelectItem value="CNY">🇨🇳 CNY</SelectItem>
-                                <SelectItem value="SGD">🇸🇬 SGD</SelectItem>
-                                <SelectItem value="AED">🇦🇪 AED</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                        <div className="grid gap-3">
-                          {programData.data.programs.map(
-                            (program: any, idx: number) => {
-                              const convertedTotal =
-                                formatCurrencyWithConversion(
-                                  program.total_program_cost,
-                                  formData.currency
-                                );
-                              return (
-                                <Card
-                                  key={idx}
-                                  className="p-5 cursor-pointer hover:border-primary/50 transition-all duration-300 bg-card transform hover:-translate-y-0.5 hover:shadow-md group"
-                                  onClick={() => handleProgramSelect(program)}
-                                >
-                                  <h4 className="font-semibold text-base mb-2 transition-colors duration-300 group-hover:text-primary">
-                                    {program.program_name}
-                                  </h4>
-                                  <div className="flex gap-4 text-sm text-muted-foreground">
-                                    <span className="transition-all duration-300 group-hover:text-foreground">
-                                      Duration: {program.duration_years} years
-                                    </span>
-                                    <span className="transition-all duration-300 group-hover:text-foreground">
-                                      Total:{" "}
-                                      <CurrencyDisplay value={convertedTotal} />
-                                    </span>
-                                  </div>
-                                  {program.notes && (
-                                    <p className="text-xs text-muted-foreground mt-2 p-2 bg-muted/30 rounded transition-colors duration-300 group-hover:bg-muted/50">
-                                      {program.notes}
-                                    </p>
-                                  )}
-                                </Card>
-                              );
-                            }
-                          )}
-
-                          {/* Other Option Card */}
-                          <Card
-                            className="p-5 cursor-pointer border-2 border-dashed border-primary/30 hover:border-primary/60 transition-all duration-300 bg-card/50 transform hover:-translate-y-0.5 hover:shadow-md group"
-                            onClick={handleOtherProgramClick}
-                          >
-                            <h4 className="font-semibold text-base mb-2 transition-colors duration-300 group-hover:text-primary flex items-center gap-2">
-                              <span>Other</span>
-                              <span className="text-xs font-normal text-muted-foreground">
-                                (Enter custom program)
-                              </span>
-                            </h4>
-                            <p className="text-sm text-muted-foreground transition-all duration-300 group-hover:text-foreground">
-                              Can't find your program? Enter it manually to get
-                              cost details.
-                            </p>
-                          </Card>
-                        </div>
-
-                        {/* Custom Program Input */}
-                        {isOtherProgramSelected && (
-                          <div className="mt-4 p-4 border border-primary/30 rounded-lg bg-primary/5">
-                            <label className="text-sm font-medium mb-2 block">
-                              Enter Program Name
-                            </label>
-                            <div className="flex gap-2">
-                              <Input
-                                placeholder="e.g., Master of Finance"
-                                value={customProgramName}
-                                onChange={(e) =>
-                                  dispatch(setCustomProgramName(e.target.value))
-                                }
-                                onKeyPress={(e) =>
-                                  e.key === "Enter" &&
-                                  handleCustomProgramSubmit()
-                                }
-                                className="flex-1 h-11 transition-all duration-300 focus:shadow-sm"
-                              />
-                              <Button
-                                onClick={handleCustomProgramSubmit}
-                                disabled={!customProgramName.trim()}
-                                className="gradient-primary px-5 h-11 font-semibold transition-all duration-300 hover:shadow-glow transform hover:scale-105 active:scale-95"
-                              >
-                                Fetch Details
-                              </Button>
-                              <Button
-                                onClick={() => {
-                                  dispatch(setIsOtherProgramSelected(false));
-                                  dispatch(setCustomProgramName(""));
-                                }}
-                                variant="outline"
-                                className="h-11 px-4"
-                              >
-                                Cancel
-                              </Button>
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
+                      {step === "programs" && !isTyping && programData?.data?.programs && (
+                        <ProgramSelector
+                          programs={programData.data.programs}
+                          currencyDisplayMode={currencyDisplayMode}
+                          onCurrencyDisplayModeChange={(mode) => dispatch(setCurrencyDisplayMode(mode))}
+                          preferredCurrency={preferredCurrency}
+                          onPreferredCurrencyChange={(currency) => dispatch(setPreferredCurrency(currency))}
+                          formCurrency={formData.currency}
+                          onProgramSelect={handleProgramSelect}
+                          onOtherProgramClick={handleOtherProgramClick}
+                          isOtherProgramSelected={isOtherProgramSelected}
+                          customProgramName={customProgramName}
+                          onCustomProgramNameChange={(name) => dispatch(setCustomProgramName(name))}
+                          onCustomProgramSubmit={handleCustomProgramSubmit}
+                          onCustomProgramCancel={() => {
+                            dispatch(setIsOtherProgramSelected(false));
+                            dispatch(setCustomProgramName(""));
+                          }}
+                          formatCurrencyWithConversion={formatCurrencyWithConversion}
+                          isLoading={false} // Set to true when fetching custom program details
+                        />
+                      )}
 
                   {step === "university" && !isTyping && (
                     <div className="relative py-4">
@@ -1550,38 +1434,28 @@ const ChatJourney = () => {
                           </div>
                         </Card>
                       )}
-                    </div>
-                  )}
-
-                  {step === "loan-amount" && !isTyping && costBreakdown && (
-                    <div className="py-4 space-y-4">
-                      <CostBreakdownCard {...costBreakdown} />
-                      <div className="flex gap-2">
-                        <div className="relative flex-1">
-                          <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground transition-colors duration-300 peer-focus:text-primary" />
-                          <Input
-                            type="number"
-                            placeholder={`Enter amount in ${formData.currency}...`}
-                            value={userInput}
-                            onChange={(e) =>
-                              dispatch(setUserInput(e.target.value))
-                            }
-                            onKeyPress={(e) =>
-                              e.key === "Enter" && handleLoanAmount()
-                            }
-                            className="pl-10 h-12 rounded-lg peer transition-all duration-300 focus:shadow-sm hover:border-primary/40"
-                          />
                         </div>
-                        <Button
-                          onClick={handleLoanAmount}
-                          disabled={!userInput || parseFloat(userInput) <= 0}
-                          className="gradient-primary px-6 h-12 rounded-lg font-semibold transition-all duration-300 hover:shadow-glow transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                        >
-                          Continue
-                        </Button>
-                      </div>
-                    </div>
-                  )}
+                      )}
+
+                      {step === "loan-amount" && !isTyping && costBreakdown && totalProgramCost && (
+                        <div className="py-4 space-y-3 max-w-lg mx-auto">
+                          {/* Compact Cost Breakdown - Horizontal Layout */}
+                          <div className="animate-fade-in">
+                            <CompactCostBreakdownCard {...costBreakdown} />
+                          </div>
+
+                          {/* Streamlined Loan Amount Input */}
+                          <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+                            <StreamlinedLoanAmountInput
+                              totalCost={parseFloat(totalProgramCost)}
+                              currency={formData.currency}
+                              value={userInput}
+                              onChange={(value) => dispatch(setUserInput(value))}
+                              onSubmit={handleLoanAmount}
+                            />
+                          </div>
+                        </div>
+                      )}
 
                   {step === "loan-type" && !isTyping && (
                     <div className="flex py-4">
@@ -1859,8 +1733,8 @@ const ChatJourney = () => {
                         ) : (
                           <Button
                             onClick={handleResendOTP}
-                            variant="ghost"
-                            className="text-primary hover:text-primary/80 font-semibold"
+                            // variant="ghost"
+                            className="text-primary bg-transparent hover:text-primary/80 hover:bg-primary hover:text-white font-semibold"
                           >
                             Resend OTP
                           </Button>

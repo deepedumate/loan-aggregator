@@ -1,8 +1,9 @@
 import { memo } from "react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
-import { Sparkles, User } from "lucide-react";
+import { Pencil, Sparkles, User } from "lucide-react";
 import edumateLogo from "../../../public/favicon.ico";
+import TypewriterText from "./TypewriterText";
 
 interface ChatBubbleProps {
   message: string;
@@ -10,9 +11,10 @@ interface ChatBubbleProps {
   isTyping?: boolean;
   onEdit?: () => void;
   canEdit?: boolean;
+  typewriter?: boolean;
 }
 
-const ChatBubbleComponent = ({ message, isUser, isTyping, onEdit, canEdit }: ChatBubbleProps) => {
+const ChatBubbleComponent = ({ message, isUser, isTyping, onEdit, canEdit, typewriter = false }: ChatBubbleProps) => {
   return (
     <div className={cn(
       "w-full py-6 px-4 md:px-6 transition-all duration-300",
@@ -69,54 +71,41 @@ const ChatBubbleComponent = ({ message, isUser, isTyping, onEdit, canEdit }: Cha
               )} */}
             </div>
 
-            {/* Message Bubble */}
-            {isTyping ? (
-              <div className="inline-flex items-center gap-2 px-5 py-3.5 bg-gradient-to-br from-muted/40 to-muted/20 backdrop-blur-sm rounded-2xl rounded-tl-md border border-border/30 shadow-sm">
-                <span className="w-2.5 h-2.5 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                <span className="w-2.5 h-2.5 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                <span className="w-2.5 h-2.5 bg-primary/60 rounded-full animate-bounce" />
-              </div>
-            ) : (
-              <div 
-                className={cn(
-                  "inline-block max-w-[90%] md:max-w-[85%] transition-all duration-300",
-                  isUser 
-                    ? "bg-gradient-to-br from-primary via-primary-light to-primary text-white rounded-2xl rounded-tr-md px-5 py-3.5 shadow-lg shadow-primary/20" 
-                    : "bg-gradient-to-br from-card to-primary/5 text-foreground rounded-2xl rounded-tl-md px-5 py-3.5 border border-border/50 shadow-md backdrop-blur-lg",
-                  canEdit && "cursor-pointer group hover:shadow-xl hover:scale-[1.02] relative"
-                )}
-                onClick={canEdit ? onEdit : undefined}
-              >
-                <div className={cn(
-                  "text-[15px] leading-relaxed",
-                  "prose prose-base max-w-none",
-                  "prose-p:my-2.5 prose-p:first:mt-0 prose-p:last:mb-0",
-                  "prose-strong:font-bold",
-                  "prose-headings:font-display prose-headings:font-bold",
-                  "prose-ul:my-2 prose-ol:my-2",
-                  "prose-li:my-1",
-                  isUser 
-                    ? "prose-p:text-white prose-strong:text-white prose-headings:text-white prose-li:text-white" 
-                    : "prose-p:text-foreground prose-strong:text-foreground prose-headings:text-foreground prose-li:text-foreground"
-                )}>
-                  <ReactMarkdown>{message}</ReactMarkdown>
-                </div>
-                
-                {canEdit && (
-                  <div className={cn(
-                    "absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none",
-                    isUser ? "right-3 -bottom-8" : "left-3 -bottom-8"
-                  )}>
-                    <div className={cn(
-                      "whitespace-nowrap text-xs font-semibold px-2 py-1 rounded shadow",
-                      isUser ? "bg-primary text-white" : "bg-card text-foreground border border-border/30"
-                    )}>
-                      Click to edit
-                    </div>
-                  </div>
-                )}
-              </div>
+        {/* Message Bubble */}
+        {isTyping ? (
+          <div className="inline-flex items-center gap-1.5 px-5 py-4 chat-bubble-ai">
+            <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.3s]" />
+            <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce [animation-delay:-0.15s]" />
+            <span className="w-2 h-2 bg-primary/60 rounded-full animate-bounce" />
+          </div>
+        ) : (
+          <div 
+            className={cn(
+              "relative inline-block group",
+              isUser ? "chat-bubble-user" : "chat-bubble-ai"
             )}
+          >
+            {typewriter && !isUser ? (
+              <TypewriterText><ReactMarkdown>{message}</ReactMarkdown></TypewriterText>
+            ) : (
+              <ReactMarkdown>{message}</ReactMarkdown>
+            )}
+            
+            {/* Edit Button - positioned outside the bubble */}
+            {canEdit && onEdit && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit();
+                }}
+                className="absolute -right-1 -top-1 p-1.5 rounded-full bg-card border border-border shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-muted hover:scale-110 z-10"
+                aria-label="Edit response"
+              >
+                <Pencil className="w-3 h-3 text-muted-foreground" />
+              </button>
+            )}
+          </div>
+        )}
 
             {/* Message timestamp (optional) */}
             {!isTyping && (
