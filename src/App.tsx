@@ -54,6 +54,7 @@ const App = () => (
                   <Route path="/contact-us" element={<ContactUsPage />} />
                   <Route path="/about-us" element={<AboutPage />} />
                   <Route path="/faq" element={<FAQPage />} />
+                  <Route path="/login" element={<Login />} />
                   <Route
                     path="/partner-with-us"
                     element={<PartnerWithUsPage />}
@@ -64,7 +65,6 @@ const App = () => (
                   />
                   <Route path="/student-loan" element={<StudentLoan />} />
                 </Route>
-                <Route path="/login" element={<Login />} />
                 {/* Student Portal Routes */}
                 <Route path="/student" element={<StudentLayout />}>
                   <Route path="dashboard" element={<Dashboard />} />

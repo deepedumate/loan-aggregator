@@ -165,9 +165,9 @@ export default function LoanList() {
     }
   };
 
-  useEffect(() => {
-    const result = studentDataByPhoneNumber();
-  }, [contact?.phone_number]);
+  // useEffect(() => {
+  //   const result = studentDataByPhoneNumber();
+  // }, [contact?.phone_number]);
 
   // Convert filters to component format
   const componentFilters = useMemo(() => {
@@ -293,61 +293,55 @@ export default function LoanList() {
       return;
     }
 
-    // ===== STEP 2: User has email - toggle interested status directly =====
+    // ===== STEP 2: User has email - check if already interested =====
     const currentInterested = contactAuth.interested || [];
     const isAlreadyInterested = currentInterested.includes(loanProductId);
 
-    // Create new interested array
-    let newInterested: number[];
     if (isAlreadyInterested) {
-      // Remove from interested
-      newInterested = currentInterested.filter(
+      // Already interested - toggle to uninterested
+      const newInterested = currentInterested.filter(
         (id: number) => id !== loanProductId
       );
-    } else {
-      // Add to interested
-      newInterested = [...currentInterested, loanProductId];
-    }
 
-    console.log("Updating interested:", {
-      userId: contactAuth.id,
-      currentInterested,
-      newInterested,
-      loanProductId,
-      action: isAlreadyInterested ? "REMOVE" : "ADD",
-    });
+      console.log("Updating interested:", {
+        userId: contactAuth.id,
+        currentInterested,
+        newInterested,
+        loanProductId,
+        action: "REMOVE",
+      });
 
-    try {
-      // Call update API
-      const result = await dispatch(
-        updateUser({
-          userId: contactAuth.id.toString(),
-          payload: {
-            studentId: contactAuth.id,
-            interested: newInterested,
-          },
-        }) as any
-      );
+      try {
+        // Call update API
+        const result = await dispatch(
+          updateUser({
+            userId: contactAuth.id.toString(),
+            payload: {
+              studentId: contactAuth.id,
+              interested: newInterested,
+            },
+          }) as any
+        );
 
-      if (result.payload) {
-        // Show success toast
-        if (isAlreadyInterested) {
+        if (result.payload) {
+          // Show success toast
           toast.success("Removed from interested", {
             description: `${loan?.lender_name} has been removed from your interested list.`,
           });
         } else {
-          toast.success("Interest Recorded! ✓", {
-            description: `We'll contact you about ${loan?.lender_name} soon.`,
-          });
+          throw new Error("Failed to update interest");
         }
-      } else {
-        throw new Error("Failed to update interest");
+      } catch (error: any) {
+        console.error("Failed to update interest:", error);
+        toast.error("Failed to update interest", {
+          description: error.message || "Please try again later.",
+        });
       }
-    } catch (error: any) {
-      console.error("Failed to update interest:", error);
-      toast.error("Failed to update interest", {
-        description: error.message || "Please try again later.",
-      });
+    } else {
+      // Not interested - open modal to collect details
+      setSelectedLoan(loan);
+      setShowInterestedModal(true);
+      return;
     }
   };
 
@@ -823,6 +817,9 @@ export default function LoanList() {
         open={showInterestedModal}
         onClose={() => setShowInterestedModal(false)}
         loan={selectedLoan}
+        initialFirstName={contact?.first_name || ""}
+        initialLastName={contact?.last_name || ""}
+        initialEmail={contact?.email || ""}
       />
 
       {/* Product Tour */}

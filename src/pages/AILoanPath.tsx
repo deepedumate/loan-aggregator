@@ -69,8 +69,8 @@ import { ChatBackgroundLogoFloat, ChatBackgroundLogoScattered, ChatBackgroundLog
 import { OptionsGrid } from "@/components/chat-journey/OptionsGrid";
 import { LoanAmountInput } from "@/components/chat-journey/LoanAmountInput";
 import { ProgramSelector } from "@/components/chat-journey/ProgramSelector";
-import { CompactCostBreakdownCard } from "@/components/chat-journey/CompactCostBreakdownCard";
-import { StreamlinedLoanAmountInput } from "@/components/chat-journey/StreamlinedLoanAmountInput";
+import { CompactCostBreakdownCard } from "@/components/chat-journey/Compactcostbreakdowncard";
+import { StreamlinedLoanAmountInput } from "@/components/chat-journey/Streamlinedloanamountinput";
 
 interface UniversitySuggestion {
   name: string; // "Harvard University, Cambridge, MA, USA"

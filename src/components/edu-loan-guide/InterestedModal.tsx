@@ -61,9 +61,12 @@ interface InterestedModalProps {
   open: boolean;
   onClose: () => void;
   loan: LoanProduct | null;
+  initialFirstName?: string;
+  initialLastName?: string;
+  initialEmail?: string;
 }
 
-export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
+export function InterestedModal({ open, onClose, loan, initialFirstName = "", initialLastName = "", initialEmail = "" }: InterestedModalProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -79,6 +82,18 @@ export function InterestedModal({ open, onClose, loan }: InterestedModalProps) {
   const dispatch = useDispatch();
   const contactUser = useSelector((state: any) => state.contactAuth);
   console.log("Contact User State:", contactUser);
+
+  // Prepopulate fields when modal opens
+  useEffect(() => {
+    if (open) {
+      setFirstName(initialFirstName);
+      setLastName(initialLastName);
+      setEmail(initialEmail);
+      setConsent(false);
+      setErrors({});
+      setEmailSuggestion(null);
+    }
+  }, [open, initialFirstName, initialLastName, initialEmail]);
 
   // Check for email typos
   useEffect(() => {
