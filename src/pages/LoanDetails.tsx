@@ -55,15 +55,12 @@ export default function LoanDetails() {
   console.log("LoanDetails rendering with id:", id);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const loans = useAppSelector(selectLoanProducts);
   const loan = useSelector(selectSelectedLoanProduct);
   const isLoading = useSelector(selectIsLoadingDetails);
   const error = useSelector(selectDetailsError);
   const contactAuth = useSelector(
     (state: any) => state.contactAuth?.data?.student || null
   );
-
-  console.log("loans are coming...", loans);
 
   const [favoriteLoanIds, setFavoriteLoanIds] = useState<string[]>([]);
   const [showInterestedModal, setShowInterestedModal] = useState(false);
