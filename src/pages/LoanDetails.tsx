@@ -62,6 +62,8 @@ export default function LoanDetails() {
     (state: any) => state.contactAuth?.data?.student || null
   );
 
+  console.log("loan", loan);
+
   const [favoriteLoanIds, setFavoriteLoanIds] = useState<string[]>([]);
   const [showInterestedModal, setShowInterestedModal] = useState(false);
 
@@ -285,15 +287,25 @@ export default function LoanDetails() {
     );
   }
 
-  // Build application process steps
-  const applicationSteps: string[] = [
-    "Complete online application form with personal and academic details",
-    "Upload required documents and verification materials",
-    `Initial review and pre-approval within ${processingTime}`,
-    "Verification call and document authentication",
-    "Final approval and loan agreement signing",
-    "Disbursement to educational institution",
-  ];
+  // Build features array dynamically
+  let applicationSteps: string[] = [];
+  if (
+    loan.application_process &&
+    Array.isArray(loan.application_process) &&
+    loan.application_process.length > 0
+  ) {
+    applicationSteps = [...loan.application_process];
+  } else {
+    // Add default features if key_features is empty, null, or undefined
+    applicationSteps = [
+      "Complete online application form with personal and academic details",
+      "Upload required documents and verification materials",
+      `Initial review and pre-approval within ${processingTime}`,
+      "Verification call and document authentication",
+      "Final approval and loan agreement signing",
+      "Disbursement to educational institution",
+    ];
+  }
 
   // Build additional features
   const additionalFeatures = [
