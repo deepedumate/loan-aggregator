@@ -43,8 +43,10 @@ import {
   selectIsLoadingDetails,
   selectDetailsError,
   fetchLoanProductDetails,
+  selectLoanProducts,
 } from "@/store/slices/loanProductSlice";
 import { updateUser } from "@/store/slices/contactAuthSlice";
+import { useAppSelector } from "@/store/hooks";
 
 const FAVORITES_STORAGE_KEY = "loan-favorites";
 
@@ -53,13 +55,15 @@ export default function LoanDetails() {
   console.log("LoanDetails rendering with id:", id);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
+  const loans = useAppSelector(selectLoanProducts);
   const loan = useSelector(selectSelectedLoanProduct);
   const isLoading = useSelector(selectIsLoadingDetails);
   const error = useSelector(selectDetailsError);
   const contactAuth = useSelector(
     (state: any) => state.contactAuth?.data?.student || null
   );
+
+  console.log("loans are coming...", loans);
 
   const [favoriteLoanIds, setFavoriteLoanIds] = useState<string[]>([]);
   const [showInterestedModal, setShowInterestedModal] = useState(false);
@@ -175,7 +179,21 @@ export default function LoanDetails() {
   const isInterested = loan ? userInterested.includes(loan.id) : false;
 
   // Build features array dynamically
-  const features: string[] = loan.key_features ?? [];
+  let features: string[] = [];
+  if (
+    loan.key_features &&
+    Array.isArray(loan.key_features) &&
+    loan.key_features.length > 0
+  ) {
+    features = [...loan.key_features];
+  } else {
+    // Add default features if key_features is empty, null, or undefined
+    features = [
+      "Competitive interest rates",
+      "Flexible repayment",
+      "Quick approval",
+    ];
+  }
 
   // Build eligibility criteria
   const eligibilityCriteria: string[] = [];
@@ -462,11 +480,11 @@ export default function LoanDetails() {
   const isFavorite = loan ? userFavorites.includes(loan.id) : false;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-background flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-background flex flex-col relative z-10 mx-auto pt-16 sm:pt-28 lg:pt-16 pb-16">
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:from-primary/10 dark:via-background dark:to-accent/10 border-b border-gray-200 dark:border-border/50">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
           <Button
             variant="default"
             onClick={() => navigate("/loan-offers")}
